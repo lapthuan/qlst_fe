@@ -1,0 +1,130 @@
+import { useState } from "react";
+import { Outlet, Link } from "react-router-dom";
+import { AiOutlineMenuUnfold, AiOutlineMenuFold, AiOutlineHome } from "react-icons/ai";
+import logo from "../../image/logo2.png"
+import { Layout, Menu, Button, theme, Switch, Image } from 'antd';
+const { SubMenu } = Menu
+const { Header, Sider, Content, Footer } = Layout;
+function getItem(label, key, icon, children, path) {
+    return {
+        key,
+        icon,
+        children,
+        label,
+        path
+    };
+}
+
+const items = [
+    getItem("Sản phẩm", "1", <AiOutlineHome />, null, "/"),
+    getItem("Option 1", "2", <AiOutlineHome />, null, "/page2"),
+    getItem("User", "sub1", <AiOutlineHome />, [
+        getItem("Tom", "3", null, null, "/user/tom"),
+        getItem("Bill", "4", null, null, "/user/bill"),
+        getItem("Alex", "5", null, null, "/user/alex")
+    ]),
+    getItem("Team", "sub2", <AiOutlineHome />, [
+        getItem("Team 1", "6", null, null, "/team/team1"),
+        getItem("Team 2", "8", null, null, "/team/team2")
+    ])
+];
+const App = () => {
+    const [theme, setTheme] = useState('light');
+    const [collapsed, setCollapsed] = useState(false);
+    const [current, setCurrent] = useState('1');
+
+    const changeTheme = (value) => {
+        setTheme(value ? 'dark' : 'light');
+    };
+    const onClick = (e) => {
+        console.log('click ', e);
+        setCurrent(e.key);
+    };
+    return (
+        <Layout theme={theme}>
+
+            <Sider
+                collapsible
+                theme={theme}
+                collapsed={collapsed}
+                onCollapse={(value) => setCollapsed(value)}
+            >
+                <Image src={logo} />
+
+                <br />
+                <br />
+                <Menu
+                    theme={theme}
+                    onClick={onClick}
+                    defaultSelectedKeys={["1"]}
+                    selectedKeys={[current]}
+                    mode="inline"
+                >
+                    {items.map(item => {
+                        if (item.children) {
+                            return (
+                                <SubMenu key={item.key} icon={item.icon} title={item.label}>
+                                    {item.children.map(childItem => (
+                                        <Menu.Item key={childItem.key}>
+                                            <Link to={childItem.path}>{childItem.label}</Link>
+                                        </Menu.Item>
+                                    ))}
+                                </SubMenu>
+                            );
+                        }
+
+                        return (
+                            <Menu.Item key={item.key} icon={item.icon}>
+                                <Link to={item.path}>{item.label}</Link>
+                            </Menu.Item>
+                        );
+                    })}
+                </Menu>
+            </Sider>
+            <Layout >
+                <Header
+                    style={{
+                        padding: 0,
+                        background: "#fff",
+                    }}
+                >
+                    <Button
+                        type="text"
+                        icon={collapsed ? <AiOutlineMenuUnfold /> : <AiOutlineMenuFold />}
+                        onClick={() => setCollapsed(!collapsed)}
+                        style={{
+                            fontSize: '16px',
+                            width: 64,
+                            height: 64,
+                        }}
+                    />
+                    <Switch
+                        checked={theme === 'dark'}
+                        onChange={changeTheme}
+                        checkedChildren="Tối"
+                        unCheckedChildren="Sáng"
+                    />
+                </Header>
+                <Content
+                    style={{
+                        margin: '24px 16px',
+                        padding: 24,
+                        minHeight: "76vh",
+
+                    }}
+                >
+                    <Outlet />
+                </Content>
+                <Footer
+                    style={{
+                        textAlign: "center"
+                    }}
+                >
+                    Ant Design ©2023 Created by Ant UED
+                </Footer>
+            </Layout>
+        </Layout>
+    )
+};
+
+export default App;
