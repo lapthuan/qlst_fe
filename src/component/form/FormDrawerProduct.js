@@ -3,9 +3,9 @@ import CustomDrawer from "../drawer/CustomDrawer";
 import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from "antd";
 const { Option } = Select;
 
-const FormDrawerProduct = ({ open, setOpen }) => {
+const FormDrawerProduct = ({ open, setOpen, title }) => {
     return (
-        <CustomDrawer open={open} setOpen={setOpen} >
+        <CustomDrawer open={open} setOpen={setOpen} title={title} >
             <Form layout="vertical" hideRequiredMark>
                 <Row gutter={16}>
                     <Col span={12}>
@@ -24,123 +24,123 @@ const FormDrawerProduct = ({ open, setOpen }) => {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="url"
-                            label="Url"
+                            name="tenmh"
+                            label="Tên mặt hàng"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please enter url',
+                                    message: 'Hãy nhập tên mặt hàng',
                                 },
                             ]}
                         >
-                            <Input
-                                style={{
-                                    width: '100%',
-                                }}
-                                addonBefore="http://"
-                                addonAfter=".com"
-                                placeholder="Please enter url"
-                            />
+                            <Input placeholder="Nhập tên mặt hàng" />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={16}>
-                    <Col span={12}>
+                    <Col span={8}>
                         <Form.Item
-                            name="owner"
-                            label="Owner"
+                            name="malh"
+                            label="Loại hàng"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please select an owner',
+                                    message: 'Hãy chọn loại hàng',
                                 },
                             ]}
                         >
-                            <Select placeholder="Please select an owner">
+                            <Select placeholder="Chọn loại hàng">
                                 <Option value="xiao">Xiaoxiao Fu</Option>
                                 <Option value="mao">Maomao Zhou</Option>
                             </Select>
                         </Form.Item>
                     </Col>
-                    <Col span={12}>
+                    <Col span={8}>
                         <Form.Item
-                            name="type"
-                            label="Type"
+                            name="mansx"
+                            label="Nhà sản xuất"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please choose the type',
+                                    message: 'Hãy chọn nhà sản xuất',
                                 },
                             ]}
                         >
-                            <Select placeholder="Please choose the type">
-                                <Option value="private">Private</Option>
-                                <Option value="public">Public</Option>
+                            <Select placeholder="Chọn nhà sản xuất">
+                                <Option value="xiao">Xiaoxiao Fu</Option>
+                                <Option value="mao">Maomao Zhou</Option>
                             </Select>
                         </Form.Item>
                     </Col>
+                    <Col span={8}>
+                        <Form.Item
+                            name="magiamgia"
+                            label="Mã giảm giá"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Hãy chọn mã giảm giá',
+                                },
+                            ]}
+                        >
+                            <Input placeholder="Nhập tên mặt hàng" />
+                        </Form.Item>
+                    </Col>
+
                 </Row>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="approver"
-                            label="Approver"
+                            name="dvt"
+                            label="Đơn vị tính"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please choose the approver',
+                                    message: 'Hãy nhập đơn vị tính',
                                 },
                             ]}
                         >
-                            <Select placeholder="Please choose the approver">
-                                <Option value="jack">Jack Ma</Option>
-                                <Option value="tom">Tom Liu</Option>
-                            </Select>
+                            <Input placeholder="Nhập đơn vị tính" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="dateTime"
-                            label="DateTime"
+                            name="giamgia"
+                            label="Giá"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please choose the dateTime',
+                                    message: 'Hãy nhập giá',
                                 },
                             ]}
                         >
-                            <DatePicker.RangePicker
-                                style={{
-                                    width: '100%',
-                                }}
-                                getPopupContainer={(trigger) => trigger.parentElement}
-                            />
+                            <Input placeholder="Nhập giá mặt hàng" />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={16}>
                     <Col span={24}>
                         <Form.Item
-                            name="description"
-                            label="Description"
+                            name="mota"
+                            label="Mô tả"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'please enter url description',
+                                    message: 'Hãy nhập mô tả',
                                 },
                             ]}
                         >
-                            <Input.TextArea rows={4} placeholder="please enter url description" />
+                            <Input.TextArea rows={4} placeholder="Nhập mô tả sản phẩm" />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Form.Item
 
                 >
-                    <Space>
-                        <Button onClick={() => setOpen(!open)}>Cancel</Button>
+                    <Space align="end">
+                        <Button onClick={() => setOpen(!open)}>Hủy</Button>
                         <Button type="primary" htmlType="submit">
-                            Submit
+                            Thêm
                         </Button>
                     </Space>
                 </Form.Item>

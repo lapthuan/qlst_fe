@@ -8,7 +8,7 @@ import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 
-const Home = () => {
+const Merchandise = () => {
     const [open, setOpen] = useState(false);
     const columns = [
         {
@@ -67,7 +67,7 @@ const Home = () => {
 
     return (
         <>
-            <FormDrawerProduct open={open} setOpen={setOpen} />
+            <FormDrawerProduct open={open} setOpen={setOpen} title={"Thêm mặt hàng"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
@@ -99,4 +99,4 @@ const Home = () => {
     );
 }
 
-export default Home;
+export default Merchandise;

@@ -16,17 +16,28 @@ function getItem(label, key, icon, children, path) {
 }
 
 const items = [
-    getItem("Sản phẩm", "1", <AiOutlineHome />, null, "/"),
-    getItem("Option 1", "2", <AiOutlineHome />, null, "/page2"),
-    getItem("User", "sub1", <AiOutlineHome />, [
-        getItem("Tom", "3", null, null, "/user/tom"),
-        getItem("Bill", "4", null, null, "/user/bill"),
-        getItem("Alex", "5", null, null, "/user/alex")
+    getItem("Trang chủ", "1", <AiOutlineHome />, null, "/"),
+    getItem("Danh mục", "sub1", <AiOutlineHome />, [
+        getItem("Hàng hóa", "3", null, null, "/mathang"),
+        getItem("Loại hàng", "4", null, null, "/loaihang"),
+        getItem("Nhà sản xuất", "5", null, null, "/nhasanxuat"),
+        getItem("Phiếu giảm giá", "6", null, null, "/phieugiamgia")
     ]),
-    getItem("Team", "sub2", <AiOutlineHome />, [
-        getItem("Team 1", "6", null, null, "/team/team1"),
-        getItem("Team 2", "8", null, null, "/team/team2")
-    ])
+    getItem("Quản trị", "sub2", <AiOutlineHome />, [
+        getItem("Nhân viên", "12", null, null, "/nhanvien"),
+        getItem("Tài khoản", "13", null, null, "/taikhoan"),
+        getItem("Khách hàng", "14", null, null, "/khachhang"),
+        getItem("Chức vụ", "15", null, null, "/chucvu"),
+        getItem("Bộ phận", "16", null, null, "/bophan"),
+    ]),
+    getItem("Chức năng", "sub3", <AiOutlineHome />, [
+        getItem("Kho", "17", null, null, "/kho"),
+        getItem("Kệ", "18", null, null, "/ke"),
+        getItem("Phiếu nhập", "18", null, null, "/phieunhap"),
+    ]),
+    getItem("Hóa đơn", "1", <AiOutlineHome />, null, "/hoadon"),
+    getItem("Chi nhánh", "1", <AiOutlineHome />, null, "/chinhanh"),
+
 ];
 const App = () => {
     const [theme, setTheme] = useState('light');
@@ -81,16 +92,18 @@ const App = () => {
                     })}
                 </Menu>
             </Sider>
-            <Layout >
+            <Layout
+
+            >
                 <Header
                     style={{
                         padding: 0,
-                        background: "#fff",
+                        background: theme === "light" ? "#fff" : "#001529",
                     }}
                 >
                     <Button
                         type="text"
-                        icon={collapsed ? <AiOutlineMenuUnfold /> : <AiOutlineMenuFold />}
+                        icon={collapsed ? <AiOutlineMenuUnfold color={theme !== "light" ? "#fff" : "#001529"} /> : <AiOutlineMenuFold color={theme !== "light" ? "#fff" : "#001529"} />}
                         onClick={() => setCollapsed(!collapsed)}
                         style={{
                             fontSize: '16px',
@@ -110,8 +123,9 @@ const App = () => {
                         margin: '24px 16px',
                         padding: 24,
                         minHeight: "76vh",
-
+                        background: "#fff"
                     }}
+
                 >
                     <Outlet />
                 </Content>
@@ -123,7 +137,7 @@ const App = () => {
                     Ant Design ©2023 Created by Ant UED
                 </Footer>
             </Layout>
-        </Layout>
+        </Layout >
     )
 };
 
