@@ -2,8 +2,7 @@
 
 import { Breadcrumb, Button, Divider, Space } from 'antd';
 import { useState } from 'react';
-import CustomDrawer from '../component/drawer/CustomDrawer';
-import FormDrawerProduct from '../component/form/FormDrawerProduct';
+import FormDrawerMerchandise from '../component/form/FormDrawerMerchandise';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 
@@ -50,8 +49,8 @@ const Merchandise = () => {
             key: 'dvt',
         },
         {
-            title: 'Action',
-            key: 'action',
+            title: 'Công cụ',
+            key: 'congcu',
             render: (_, record) => (
                 <Space size="middle">
                     <Button type="dashed" >Sửa</Button>
@@ -67,13 +66,14 @@ const Merchandise = () => {
 
     return (
         <>
-            <FormDrawerProduct open={open} setOpen={setOpen} title={"Thêm mặt hàng"} />
+            <FormDrawerMerchandise open={open} setOpen={setOpen} title={"Thêm mặt hàng"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
-                <Breadcrumb.Item>Trang chủ</Breadcrumb.Item>
+                <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
+                <Breadcrumb.Item>Mặt hàng</Breadcrumb.Item>
 
             </Breadcrumb>
             <div className='page-container'>

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { AiOutlineMenuUnfold, AiOutlineMenuFold, AiOutlineHome } from "react-icons/ai";
+import { AiOutlineMenuUnfold, AiOutlineMenuFold, AiOutlineHome, AiOutlineUnorderedList } from "react-icons/ai";
+import { RiAdminLine, RiFunctionLine, RiBillLine, RiPresentationFill } from "react-icons/ri";
 import logo from "../../image/logo2.png"
-import { Layout, Menu, Button, theme, Switch, Image } from 'antd';
+import { Layout, Menu, Button, Switch, Image } from 'antd';
 const { SubMenu } = Menu
 const { Header, Sider, Content, Footer } = Layout;
 function getItem(label, key, icon, children, path) {
@@ -17,26 +18,26 @@ function getItem(label, key, icon, children, path) {
 
 const items = [
     getItem("Trang chủ", "1", <AiOutlineHome />, null, "/"),
-    getItem("Danh mục", "sub1", <AiOutlineHome />, [
+    getItem("Danh mục", "sub1", <AiOutlineUnorderedList />, [
         getItem("Hàng hóa", "3", null, null, "/mathang"),
         getItem("Loại hàng", "4", null, null, "/loaihang"),
         getItem("Nhà sản xuất", "5", null, null, "/nhasanxuat"),
         getItem("Phiếu giảm giá", "6", null, null, "/phieugiamgia")
     ]),
-    getItem("Quản trị", "sub2", <AiOutlineHome />, [
+    getItem("Quản trị", "sub2", <RiAdminLine />, [
         getItem("Nhân viên", "12", null, null, "/nhanvien"),
         getItem("Tài khoản", "13", null, null, "/taikhoan"),
         getItem("Khách hàng", "14", null, null, "/khachhang"),
         getItem("Chức vụ", "15", null, null, "/chucvu"),
         getItem("Bộ phận", "16", null, null, "/bophan"),
     ]),
-    getItem("Chức năng", "sub3", <AiOutlineHome />, [
+    getItem("Chức năng", "sub3", <RiFunctionLine />, [
         getItem("Kho", "17", null, null, "/kho"),
         getItem("Kệ", "18", null, null, "/ke"),
-        getItem("Phiếu nhập", "18", null, null, "/phieunhap"),
+        getItem("Phiếu nhập", "19", null, null, "/phieunhap"),
     ]),
-    getItem("Hóa đơn", "1", <AiOutlineHome />, null, "/hoadon"),
-    getItem("Chi nhánh", "1", <AiOutlineHome />, null, "/chinhanh"),
+    getItem("Hóa đơn", "2", <RiBillLine />, null, "/hoadon"),
+    getItem("Chi nhánh", "20", <RiPresentationFill />, null, "/chinhanh"),
 
 ];
 const App = () => {

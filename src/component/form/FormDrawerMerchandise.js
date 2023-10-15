@@ -1,9 +1,9 @@
 
 import CustomDrawer from "../drawer/CustomDrawer";
-import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from "antd";
+import { Button, Col, Form, Input, Row, Select, Space } from "antd";
 const { Option } = Select;
 
-const FormDrawerProduct = ({ open, setOpen, title }) => {
+const FormDrawerMerchandise = ({ open, setOpen, title }) => {
     return (
         <CustomDrawer open={open} setOpen={setOpen} title={title} >
             <Form layout="vertical" hideRequiredMark>
@@ -15,7 +15,7 @@ const FormDrawerProduct = ({ open, setOpen, title }) => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Hãy Nhập mã mặt hàng',
+                                    message: 'Hãy nhập mã mặt hàng',
                                 },
                             ]}
                         >
@@ -151,4 +151,4 @@ const FormDrawerProduct = ({ open, setOpen, title }) => {
     );
 }
 
-export default FormDrawerProduct;
+export default FormDrawerMerchandise;
