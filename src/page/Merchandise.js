@@ -11,6 +11,7 @@ import useAsync from '../hook/useAsync';
 
 const Merchandise = () => {
     const [open, setOpen] = useState(false);
+    const [id, setId] = useState();
     const { data: Merchandise } = useAsync(() => ServicesMerchandise.getAllMerchandise())
 
     const columns = [
@@ -58,7 +59,7 @@ const Merchandise = () => {
             dataIndex: 'mamh',
             render: (id) => (
                 <Space size="middle">
-                    <Button type="dashed" >Sửa</Button>
+                    <Button type="dashed" onClick={() => handleEditClick(id)}>Sửa</Button>
                     <Button type="primary" danger onClick={() => handleDeleteClick(id)}>Xóa</Button>
 
                 </Space >
@@ -67,9 +68,12 @@ const Merchandise = () => {
     ];
 
     const handleDeleteClick = (id) => {
-        console.log('id ', id)
+        setId(id)
     };
-
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
 
     let data = []
     Merchandise?.map((dt, i) => {
@@ -91,7 +95,7 @@ const Merchandise = () => {
 
     return (
         <>
-            <FormDrawerMerchandise open={open} setOpen={setOpen} title={"Thêm mặt hàng"} />
+            <FormDrawerMerchandise open={open} setOpen={setOpen} title={"Thêm mặt hàng"} id={id} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
