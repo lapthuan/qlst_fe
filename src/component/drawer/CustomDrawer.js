@@ -1,7 +1,7 @@
 import React from 'react';
 import { Drawer } from 'antd';
 
-const CustomDrawer = ({ open, setOpen, children, title, setId }) => {
+const CustomDrawer = ({ open, setOpen, children, title, setId, form }) => {
 
     const showDrawer = () => {
         setOpen(true);

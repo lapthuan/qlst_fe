@@ -7,19 +7,33 @@ import { useEffect, useState } from "react";
 const { Option } = Select;
 
 const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
-    const [aData, setAData] = useState()
+    const [form] = Form.useForm();
+
     useEffect(() => {
         if (id) {
             (async () => {
                 const res = await ServicesMerchandise.getAMerchandise(id)
-
+                if (res) {
+                    form.setFieldsValue({
+                        mamh: res[0].MaMH,
+                        tenmh: res[0].TenMH,
+                        malh: res[0].MaLH,
+                        mansx: res[0].MaNSX,
+                        mota: res[0].MoTa,
+                        giamgia: res[0].GiamGia,
+                        magiamgia: res[0].MaGiamGia,
+                        dvt: res[0].DVT,
+                    });
+                }
             })();
-
+        } else {
+            form.resetFields()
         }
     }, [id])
+
     return (
-        <CustomDrawer open={open} setOpen={setOpen} title={(id ? "Sửa " : "Thêm ") + title} setId={setId}>
-            <Form layout="vertical" hideRequiredMark>
+        <CustomDrawer open={open} setOpen={setOpen} title={(id ? "Sửa " : "Thêm ") + title} setId={setId} >
+            <Form form={form} layout="vertical" hideRequiredMark>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
