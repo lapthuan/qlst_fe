@@ -5,10 +5,14 @@ import { useState } from 'react';
 import FormDrawerMerchandise from '../component/form/FormDrawerMerchandise';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
+import ServicesMerchandise from '../service/ServiceMerchandise';
+import useAsync from '../hook/useAsync';
 
 
 const Merchandise = () => {
     const [open, setOpen] = useState(false);
+    const { data: Merchandise } = useAsync(() => ServicesMerchandise.getAllMerchandise())
+    console.log('Merchandise', Merchandise)
     const columns = [
         {
             title: 'Mã MH',

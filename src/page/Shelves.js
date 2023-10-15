@@ -3,6 +3,7 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
+import FormDrawerShelves from '../component/form/FormDrawerShelves';
 
 const Shelves = () => {
     const [open, setOpen] = useState(false);
@@ -42,7 +43,7 @@ const Shelves = () => {
     let data = []
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm kệ"} />
+            <FormDrawerShelves open={open} setOpen={setOpen} title={"Thêm kệ"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',

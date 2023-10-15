@@ -40,6 +40,7 @@ const items = [
     getItem("Chi nhánh", "20", <RiPresentationFill />, null, "/chinhanh"),
 
 ];
+
 const App = () => {
     const [theme, setTheme] = useState('light');
     const [collapsed, setCollapsed] = useState(false);
@@ -93,9 +94,7 @@ const App = () => {
                     })}
                 </Menu>
             </Sider>
-            <Layout
-
-            >
+            <Layout>
                 <Header
                     style={{
                         padding: 0,

@@ -10,130 +10,69 @@ const FormDrawerShelves = ({ open, setOpen, title }) => {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="mamh"
-                            label="Mã mặt hàng"
+                            name="make"
+                            label="Mã kệ"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Hãy nhập mã mặt hàng',
+                                    message: 'Hãy nhập mã kệ',
                                 },
                             ]}
                         >
-                            <Input placeholder="Nhập mã mặt hàng" />
+                            <Input placeholder="Nhập mã kệ" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="tenmh"
-                            label="Tên mặt hàng"
+                            name="tenke"
+                            label="Tên kệ"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Hãy nhập tên mặt hàng',
+                                    message: 'Hãy nhập tên kệ',
                                 },
                             ]}
                         >
-                            <Input placeholder="Nhập tên mặt hàng" />
+                            <Input placeholder="Nhập tên kệ" />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={16}>
-                    <Col span={8}>
+                    <Col span={12}>
                         <Form.Item
-                            name="malh"
-                            label="Loại hàng"
+                            name="mamh"
+                            label="Mặt hàng"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Hãy chọn loại hàng',
+                                    message: 'Hãy chọn mặt hàng',
                                 },
                             ]}
                         >
-                            <Select placeholder="Chọn loại hàng">
+                            <Select placeholder="Chọn mặt hàng">
                                 <Option value="xiao">Xiaoxiao Fu</Option>
                                 <Option value="mao">Maomao Zhou</Option>
                             </Select>
                         </Form.Item>
                     </Col>
-                    <Col span={8}>
+
+                    <Col span={12}>
                         <Form.Item
-                            name="mansx"
-                            label="Nhà sản xuất"
+                            name="vitri"
+                            label="Vị trí"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Hãy chọn nhà sản xuất',
+                                    message: 'Hãy nhập vị trí',
                                 },
                             ]}
                         >
-                            <Select placeholder="Chọn nhà sản xuất">
-                                <Option value="xiao">Xiaoxiao Fu</Option>
-                                <Option value="mao">Maomao Zhou</Option>
-                            </Select>
-                        </Form.Item>
-                    </Col>
-                    <Col span={8}>
-                        <Form.Item
-                            name="magiamgia"
-                            label="Mã giảm giá"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Hãy chọn mã giảm giá',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Nhập tên mặt hàng" />
+                            <Input placeholder="Nhập vị trí" />
                         </Form.Item>
                     </Col>
 
                 </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item
-                            name="dvt"
-                            label="Đơn vị tính"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Hãy nhập đơn vị tính',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Nhập đơn vị tính" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            name="giamgia"
-                            label="Giá"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Hãy nhập giá',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Nhập giá mặt hàng" />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row gutter={16}>
-                    <Col span={24}>
-                        <Form.Item
-                            name="mota"
-                            label="Mô tả"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Hãy nhập mô tả',
-                                },
-                            ]}
-                        >
-                            <Input.TextArea rows={4} placeholder="Nhập mô tả sản phẩm" />
-                        </Form.Item>
-                    </Col>
-                </Row>
+
                 <Form.Item
 
                 >
