@@ -55,15 +55,21 @@ const Merchandise = () => {
         {
             title: 'Công cụ',
             key: 'congcu',
-            render: (_, record) => (
+            dataIndex: 'mamh',
+            render: (id) => (
                 <Space size="middle">
                     <Button type="dashed" >Sửa</Button>
-                    <Button type="primary" danger>Xóa</Button>
+                    <Button type="primary" danger onClick={() => handleDeleteClick(id)}>Xóa</Button>
 
                 </Space >
             ),
         },
     ];
+
+    const handleDeleteClick = (id) => {
+        console.log('id ', id)
+    };
+
 
     let data = []
     Merchandise?.map((dt, i) => {
