@@ -1,11 +1,24 @@
 
 import CustomDrawer from "../drawer/CustomDrawer";
 import { Button, Col, Form, Input, Row, Select, Space } from "antd";
+import useAsync from "../../hook/useAsync";
+import ServicesMerchandise from "../../service/ServiceMerchandise";
+import { useEffect, useState } from "react";
 const { Option } = Select;
 
-const FormDrawerMerchandise = ({ open, setOpen, title }) => {
+const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
+    const [aData, setAData] = useState()
+    useEffect(() => {
+        if (id) {
+            (async () => {
+                const res = await ServicesMerchandise.getAMerchandise(id)
+
+            })();
+
+        }
+    }, [id])
     return (
-        <CustomDrawer open={open} setOpen={setOpen} title={title} >
+        <CustomDrawer open={open} setOpen={setOpen} title={(id ? "Sửa " : "Thêm ") + title} setId={setId}>
             <Form layout="vertical" hideRequiredMark>
                 <Row gutter={16}>
                     <Col span={12}>

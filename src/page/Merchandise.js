@@ -95,7 +95,7 @@ const Merchandise = () => {
 
     return (
         <>
-            <FormDrawerMerchandise open={open} setOpen={setOpen} title={"Thêm mặt hàng"} id={id} />
+            <FormDrawerMerchandise open={open} setOpen={setOpen} title={"mặt hàng"} id={id} setId={setId} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',

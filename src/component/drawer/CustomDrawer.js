@@ -1,13 +1,14 @@
 import React from 'react';
 import { Drawer } from 'antd';
 
-const CustomDrawer = ({ open, setOpen, children, title }) => {
+const CustomDrawer = ({ open, setOpen, children, title, setId }) => {
 
     const showDrawer = () => {
         setOpen(true);
     };
     const onClose = () => {
         setOpen(false);
+        setId()
     };
     return (
         <>
