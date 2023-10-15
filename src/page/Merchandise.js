@@ -12,7 +12,7 @@ import useAsync from '../hook/useAsync';
 const Merchandise = () => {
     const [open, setOpen] = useState(false);
     const { data: Merchandise } = useAsync(() => ServicesMerchandise.getAllMerchandise())
-    console.log('Merchandise', Merchandise)
+
     const columns = [
         {
             title: 'Mã MH',
@@ -66,7 +66,22 @@ const Merchandise = () => {
     ];
 
     let data = []
-
+    Merchandise?.map((dt, i) => {
+        data.push(
+            {
+                key: i + 1,
+                mamh: dt.MaMH,
+                malh: dt.TenLH,
+                mansx: dt.TenNsx,
+                magiamgia: dt.MaGiamGia,
+                tenmh: dt.TenMH,
+                gia: dt.GiamGia,
+                mota: dt.MoTa,
+                dvt: dt.DVT,
+            }
+        )
+    }
+    )
 
     return (
         <>
