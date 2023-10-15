@@ -29,14 +29,14 @@ const Branch = () => {
             dataIndex: 'sdt',
             key: 'sdt',
         },
-      
-      
+
+
     ];
 
     let data = []
     return (
         <>
-       
+
             <Breadcrumb
                 style={{
                     margin: '16px 0',
@@ -46,14 +46,7 @@ const Branch = () => {
             </Breadcrumb>
             <div className='page-container'>
 
-                <Space direction="vertical">
-                    <Space wrap>
-                        <Button icon={<AiOutlinePlus />} type="primary" onClick={() => setOpen(!open)}>
-                            Thêm
-                        </Button>
-                    </Space>
 
-                </Space>
                 <Divider orientation="left" plain>
                     Danh sách
                 </Divider>

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
+import FormDrawerDeliveryReceipt from '../component/form/FormDrawerDeliveryReceipt';
 
 
 const DeliveryReceipt = () => {
@@ -48,7 +49,7 @@ const DeliveryReceipt = () => {
     let data = []
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm phiếu nhập"} />
+            <FormDrawerDeliveryReceipt open={open} setOpen={setOpen} title={"Thêm phiếu nhập"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
