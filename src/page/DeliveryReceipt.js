@@ -6,7 +6,7 @@ import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerDeliveryReceipt from '../component/form/FormDrawerDeliveryReceipt';
 import useAsync from '../hook/useAsync';
 import ServiceDeliveryReceipt from '../service/ServiceDeliveryReceipt';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 
 const DeliveryReceipt = () => {
@@ -51,7 +51,7 @@ const DeliveryReceipt = () => {
         },
     ];
 
-     const handleDeleteClick = (id) => {
+    const handleDeleteClick = (id) => {
         setId(id)
     };
     const handleEditClick = (id) => {
@@ -60,9 +60,9 @@ const DeliveryReceipt = () => {
     };
 
     let data = []
-  
+
     deliveryReceipt?.map((Item, i) => {
-        const ngaylapphieu = moment(Item.NgayLapPhieu).format('DD/MM/YYYY HH:mm');
+        const ngaylapphieu = dayjs(Item.NgayLapPhieu).format('DD/MM/YYYY HH:mm');
         data.push({
             key: i + 1,
             maphieunhap: Item.MaPhieuNhap,
@@ -70,9 +70,9 @@ const DeliveryReceipt = () => {
             kho: Item.TenKho,
             dvt: Item.DVT,
             ngaylapphieu: ngaylapphieu,
-            
-            
-           
+
+
+
         })
 
     })

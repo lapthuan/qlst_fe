@@ -6,7 +6,7 @@ import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerCustomer from '../component/form/FormDrawerCustomer';
 import ServiceCustomer from '../service/ServiceCustomer';
 import useAsync from '../hook/useAsync';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const Customer = () => {
     const [open, setOpen] = useState(false);
@@ -60,7 +60,7 @@ const Customer = () => {
         },
     ];
 
-      const handleDeleteClick = (id) => {
+    const handleDeleteClick = (id) => {
         setId(id)
     };
     const handleEditClick = (id) => {
@@ -70,8 +70,8 @@ const Customer = () => {
 
     let data = []
     customer?.map((Item, i) => {
-        
-        const ngaysinh = moment(Item.NgaySinh).format('DD/MM/YYYY HH:mm');
+
+        const ngaysinh = dayjs(Item.NgaySinh).format('DD/MM/YYYY');
 
         data.push(
             {
@@ -82,8 +82,8 @@ const Customer = () => {
                 ngaysinh: ngaysinh,
                 gioitinh: Item.GioiTinh,
                 diachi: Item.Diachi,
-                sdt: Item.Sdt   ,
-               
+                sdt: Item.Sdt,
+
             }
         );
     }

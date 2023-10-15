@@ -5,7 +5,8 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerCoupon from '../component/form/FormDrawerCoupon';
 import useAsync from '../hook/useAsync';
 import ServiceCoupon from '../service/ServiceCoupon';
-import moment from 'moment';
+import dayjs from 'dayjs';
+
 
 const Coupon = () => {
     const [open, setOpen] = useState(false);
@@ -60,17 +61,17 @@ const Coupon = () => {
 
     let data = []
     coupon?.map((Item, i) => {
-        const ngayApDungFormatted = moment(Item.NgayApDung).format('DD/MM/YYYY HH:mm');
-        const ngayHetHanFormatted = moment(Item.NgayHetHan).format('DD/MM/YYYY HH:mm');
+        const ngayApDungFormatted = dayjs(Item.NgayApDung).format('DD/MM/YYYY HH:mm');
+        const ngayHetHanFormatted = dayjs(Item.NgayHetHan).format('DD/MM/YYYY HH:mm');
 
         data.push(
             {
-            key: i + 1,
-            magiamgia: Item.MaGiamGia,
-            tenmagg: Item.TenMaGG,
-            giatrigiam: Item.GiaTriGiam,
-            ngayapdung: ngayApDungFormatted,
-            ngayhethan: ngayHetHanFormatted,
+                key: i + 1,
+                magiamgia: Item.MaGiamGia,
+                tenmagg: Item.TenMaGG,
+                giatrigiam: Item.GiaTriGiam,
+                ngayapdung: ngayApDungFormatted,
+                ngayhethan: ngayHetHanFormatted,
             }
         );
     }

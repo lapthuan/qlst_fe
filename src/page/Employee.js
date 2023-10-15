@@ -6,12 +6,13 @@ import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerEmployee from '../component/form/FormDrawerEmployee';
 import ServiceEmployee from '../service/ServiceEmployee';
 import useAsync from '../hook/useAsync';
-import moment from 'moment';
+import dayjs from 'dayjs';
+
 
 
 const Employee = () => {
     const [open, setOpen] = useState(false);
-     const [id, setId] = useState();
+    const [id, setId] = useState();
     const { data: employee } = useAsync(() => ServiceEmployee.getAllEmployee())
     const columns = [
         {
@@ -66,7 +67,7 @@ const Employee = () => {
         },
     ];
 
-     const handleDeleteClick = (id) => {
+    const handleDeleteClick = (id) => {
         setId(id)
     };
     const handleEditClick = (id) => {
@@ -76,8 +77,8 @@ const Employee = () => {
 
     let data = []
     employee?.map((Item, i) => {
-        
-        const ngaysinhFormatted = moment(Item.NgaySinh).format('DD/MM/YYYY HH:mm');
+
+        const ngaysinhFormatted = dayjs(Item.NgaySinh).format('DD/MM/YYYY HH:mm');
         data.push(
             {
                 key: i + 1,

@@ -3,7 +3,8 @@ import { Outlet, Link } from "react-router-dom";
 import { AiOutlineMenuUnfold, AiOutlineMenuFold, AiOutlineHome, AiOutlineUnorderedList } from "react-icons/ai";
 import { RiAdminLine, RiFunctionLine, RiBillLine, RiPresentationFill } from "react-icons/ri";
 import logo from "../../image/logo2.png"
-import { Layout, Menu, Button, Switch, Image } from 'antd';
+import { Layout, Menu, Button, Switch, Image, Modal } from 'antd';
+import ModalDistri from "../modal/modalDistri";
 const { SubMenu } = Menu
 const { Header, Sider, Content, Footer } = Layout;
 function getItem(label, key, icon, children, path) {
@@ -111,12 +112,16 @@ const App = () => {
                             height: 64,
                         }}
                     />
+                    <ModalDistri />
+
                     <Switch
+                        style={{ marginLeft: "10px" }}
                         checked={theme === 'dark'}
                         onChange={changeTheme}
                         checkedChildren="Tối"
                         unCheckedChildren="Sáng"
                     />
+
                 </Header>
                 <Content
                     style={{
@@ -127,6 +132,7 @@ const App = () => {
                     }}
 
                 >
+
                     <Outlet />
                 </Content>
                 <Footer
