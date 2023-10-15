@@ -6,11 +6,53 @@ import {
     ProFormDateRangePicker,
     ProFormSelect,
     ProFormText,
+    ProFormTextArea,
 } from '@ant-design/pro-components';
-import { Button, Form, message } from 'antd';
+import { Button, Card, Form, message } from 'antd';
+import { useEffect, useState } from 'react';
+import useAsync from '../../hook/useAsync';
+import ServiceDistributed from '../../service/ServiceDistributed';
 
 const ModalDistri = () => {
     const [form] = Form.useForm();
+    const [bang, setBang] = useState()
+    const [cot, setCot] = useState()
+    const [dieukien, setDieukien] = useState("")
+    const [bangvitu1, setBangvitu1] = useState()
+    const [cotvitu1, setCotvitu1] = useState()
+    const [dieukienvitu1, setDieukienvitu1] = useState("")
+    const [columnOption, setColumnOption] = useState([])
+
+    const { data: resTable } = useAsync(() => ServiceDistributed.ShowTable())
+
+    let tableOption = []
+
+    resTable?.table?.map((item, index) => {
+        tableOption.push({
+            value: item,
+            label: item,
+        })
+    })
+
+    useEffect(() => {
+
+        if (bang) {
+
+            (async () => {
+                let columnsTemps = []
+                const resColumn = await ServiceDistributed.ShowColumn(bang)
+
+                resColumn?.columns?.map((item, index) => {
+                    columnsTemps.push({
+                        value: item,
+                        label: item,
+                    })
+                })
+                setColumnOption(columnsTemps)
+            })()
+        }
+
+    }, [bang])
 
     const waitTime = (time) => {
         return new Promise((resolve) => {
@@ -19,8 +61,10 @@ const ModalDistri = () => {
             }, time);
         });
     };
+
     return (
         <ModalForm
+
             title="Phân tán dữ liệu"
             trigger={
                 < Button type="dashed" >
@@ -36,74 +80,94 @@ const ModalDistri = () => {
             submitTimeout={2000}
             onFinish={async (values) => {
                 await waitTime(2000);
-                console.log(values.name);
-                message.success('提交成功');
+                console.log(values.bang);
+                console.log(values.cot);
+                console.log(values.dieukien);
+                console.log(values.bangvitu1);
+                console.log(values.cotvitu1);
+                console.log(values.dieukienvitu1);
+                const body = {
+                    "bang": values.bang,
+                    "cot": values.cot,
+                    "dieukien": values.dieukien,
+                    "bangvitu1": "nhanvien",
+                    "cotvitu1": "MaCV",
+                    "dieukienvitu1": values.dieukienvitu1
+                }
+                const bodyNull = {
+                    "bang": values.bang,
+                    "cot": values.cot,
+                    "dieukien": values.dieukien,
+                }
+                const res = ServiceDistributed.PhanTanNgang(values.dieukienvitu1 ? body : bodyNull)
+                message.success('Phân tán dữ liệu thành công');
+                setColumnOption([])
                 return true;
+
+            }}
+            submitter={{
+                searchConfig: {
+                    submitText: 'Xác nhận',
+                    resetText: 'Hủy bỏ',
+                },
             }}
         >
             <ProForm.Group>
-                <ProFormText
-                    width="md"
-                    name="name"
-                    label="签约客户名称"
-                    tooltip="最长为 24 位"
-                    placeholder="请输入名称"
-                />
 
-                <ProFormText
-                    width="md"
-                    name="company"
-                    label="我方公司名称"
-                    placeholder="请输入名称"
-                />
-            </ProForm.Group>
-            <ProForm.Group>
-                <ProFormText
-                    width="md"
-                    name="contract"
-                    label="合同名称"
-                    placeholder="请输入名称"
-                />
-                <ProFormDateRangePicker name="contractTime" label="合同生效时间" />
-            </ProForm.Group>
-            <ProForm.Group>
                 <ProFormSelect
-                    request={async () => [
-                        {
-                            value: 'chapter',
-                            label: '盖章后生效',
-                        },
-                    ]}
-                    width="xs"
-                    name="useMode"
-                    label="合同约定生效方式"
+                    options={tableOption}
+                    onChange={(value) => setBang(value)}
+                    width="sm"
+                    name="bang"
+                    label="Tên bảng"
+                    placeholder="Chọn bảng"
                 />
                 <ProFormSelect
-                    width="xs"
-                    options={[
-                        {
-                            value: 'time',
-                            label: '履行完终止',
-                        },
-                    ]}
-                    name="unusedMode"
-                    label="合同约定失效效方式"
+                    value={cot}
+                    options={columnOption}
+                    onChange={(value) => setCot(value)}
+                    width="sm"
+                    name="cot"
+                    label="Cột"
+                    placeholder="Chọn cột"
+                />
+                <ProFormText
+                    width="sm"
+                    onChange={(e) => setDieukien(e.target.value)}
+                    name="dieukien"
+                    label="Điều kiện"
+                    placeholder="Nhập điều kiện"
                 />
             </ProForm.Group>
-            <ProFormText width="sm" name="id" label="主合同编号" />
-            <ProFormText
-                name="project"
-                disabled
-                label="项目名称"
-                initialValue="xxxx项目"
-            />
-            <ProFormText
-                width="xs"
-                name="mangerName"
-                disabled
-                label="商务经理"
-                initialValue="启途"
-            />
+
+            <ProForm.Group>
+                <ProFormText
+                    width="sm"
+                    value="NhanVien"
+                    name="bangvitu1"
+                    label="Bảng vị từ"
+                    disabled
+                />
+                <ProFormText
+                    width="sm"
+                    value="MaCV"
+                    name="cotvitu1"
+                    label="Cột vị từ"
+                    disabled
+                />
+                <ProFormText
+                    width="sm"
+                    onChange={(value) => setDieukienvitu1(value)}
+                    name="dieukienvitu1"
+                    label="Điều kiện vị từ"
+                    placeholder="Nhập điều kiện vị từ"
+                />
+            </ProForm.Group>
+            <Card title="Truy vấn" bordered={false} style={{ width: "100%" }}>
+                Select  <strong>{`${bang ? bang : ""}`}</strong> from <strong>{`${bang ? bang : ""}`}</strong> {" where "}
+                <strong>{`${cot ? cot : ""}`}</strong> = <strong>{`'${dieukien ? dieukien : ""}'`}</strong>
+            </Card>
+
         </ModalForm >
     );
 }
