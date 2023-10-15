@@ -54,7 +54,7 @@ const Manufacturer = () => {
     };
 
     let data = []
-    console.log(Manufacturer);
+  
     Manufacturer?.map((Item, i) => {
         data.push({
             key: i + 1,

@@ -47,7 +47,7 @@ const TypeOfMerchandise = () => {
     };
 
     let data = []
-    console.log(typeOfMerchandise);
+   
     typeOfMerchandise?.map((Item, i) => {
         data.push({
             key: i + 1,

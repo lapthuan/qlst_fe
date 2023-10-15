@@ -3,11 +3,15 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
+import ServiceBranch from '../service/ServiceBranch';
+import useAsync from '../hook/useAsync';
 
 
 
 const Branch = () => {
     const [open, setOpen] = useState(false);
+    const [id, setId] = useState();
+    const { data: branch } = useAsync(() => ServiceBranch.getAllBranch())
     const columns = [
         {
             title: 'Mã chi nhánh',
@@ -33,10 +37,28 @@ const Branch = () => {
 
     ];
 
+    const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+  
+    branch?.map((Item, i) => {
+        data.push({
+            key: i + 1,
+            machinhanh: Item.MaCN,
+            tenchinhanh: Item.TenCN,
+            diachi: Item.DiaChi,
+            sdt: Item.Sdt,
+        })
+
+    })
     return (
         <>
-
             <Breadcrumb
                 style={{
                     margin: '16px 0',

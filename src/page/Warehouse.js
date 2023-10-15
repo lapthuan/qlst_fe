@@ -4,9 +4,13 @@ import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerWarehouse from '../component/form/FormDrawerWarehouse';
+import ServiceWarehouse from '../service/ServiceWarehouse';
+import useAsync from '../hook/useAsync';
 
 const Warehouse = () => {
     const [open, setOpen] = useState(false);
+    const [id, setId] = useState();
+    const { data: warehouse } = useAsync(() => ServiceWarehouse.getAllWarehouse())
     const columns = [
         {
             title: 'Mã kho',
@@ -40,7 +44,27 @@ const Warehouse = () => {
         },
     ];
 
+    const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+  
+    warehouse?.map((Item, i) => {
+        data.push({
+            key: i + 1,
+            makho: Item.MaKho,
+            chinhanh: Item.TenCN,
+            tenkho: Item.TenKho,
+            diachi: Item.DiaChi,
+           
+        })
+
+    })
     return (
         <>
             <FormDrawerWarehouse open={open} setOpen={setOpen} title={"Thêm kho"} />

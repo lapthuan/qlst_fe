@@ -3,9 +3,14 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
+import ServiceOrder from '../service/ServiceOrder';
+import useAsync from '../hook/useAsync';
+ 
 
 const Order = () => {
     const [open, setOpen] = useState(false);
+    const [id, setId] = useState();
+    const { data: order } = useAsync(() => ServiceOrder.getAllOrder())
     const columns = [
         {
             title: 'Mã hóa đơn',
@@ -45,7 +50,26 @@ const Order = () => {
         },
     ];
 
+    const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+  
+    order?.map((Item, i) => {
+        data.push({
+            key: i + 1,
+            magiamgia: Item.MaHD,
+            tennhanvien: Item.TenNV,
+            tenkhachhang: Item.TenKH,
+            hinhthucthanhtoan: Item.HinhThucTT,
+        })
+
+    })
     return (
         <>
 

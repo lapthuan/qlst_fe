@@ -4,9 +4,14 @@ import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerCustomer from '../component/form/FormDrawerCustomer';
+import ServiceCustomer from '../service/ServiceCustomer';
+import useAsync from '../hook/useAsync';
+import moment from 'moment';
 
 const Customer = () => {
     const [open, setOpen] = useState(false);
+    const [id, setId] = useState();
+    const { data: customer } = useAsync(() => ServiceCustomer.getAllCustomer())
     const columns = [
         {
             title: 'Mã KH',
@@ -55,7 +60,34 @@ const Customer = () => {
         },
     ];
 
+      const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+    customer?.map((Item, i) => {
+        
+        const ngaysinh = moment(Item.NgaySinh).format('DD/MM/YYYY HH:mm');
+
+        data.push(
+            {
+                key: i + 1,
+                makh: Item.MaKH,
+                machinhanh: Item.TenCN,
+                hoten: Item.TenKH,
+                ngaysinh: ngaysinh,
+                gioitinh: Item.GioiTinh,
+                diachi: Item.Diachi,
+                sdt: Item.Sdt   ,
+               
+            }
+        );
+    }
+    )
     return (
         <>
             <FormDrawerCustomer open={open} setOpen={setOpen} title={"Thêm khách hàng"} />

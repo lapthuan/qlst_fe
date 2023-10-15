@@ -4,9 +4,13 @@ import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerShelves from '../component/form/FormDrawerShelves';
+import useAsync from '../hook/useAsync';
+import ServiceShelves from '../service/ServiceShelves';
 
 const Shelves = () => {
     const [open, setOpen] = useState(false);
+    const [id, setId] = useState();
+    const { data: shelves } = useAsync(() => ServiceShelves.getAllShelves())
     const columns = [
         {
             title: 'Mã kệ',
@@ -40,7 +44,28 @@ const Shelves = () => {
         },
     ];
 
+    const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+  
+    shelves?.map((Item, i) => {
+        data.push({
+            key: i + 1,
+            magiamgia: Item.MaKe,
+            mathang: Item.TenMH,
+            tenke: Item.TenKe,
+            vitri: Item.Vitri,
+            
+           
+        })
+
+    })
     return (
         <>
             <FormDrawerShelves open={open} setOpen={setOpen} title={"Thêm kệ"} />

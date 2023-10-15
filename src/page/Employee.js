@@ -76,8 +76,8 @@ const Employee = () => {
 
     let data = []
     employee?.map((Item, i) => {
-        console.log(employee);
- const ngaysinhFormatted = moment(Item.NgaySinh).format('DD/MM/YYYY HH:mm');
+        
+        const ngaysinhFormatted = moment(Item.NgaySinh).format('DD/MM/YYYY HH:mm');
         data.push(
             {
                 key: i + 1,

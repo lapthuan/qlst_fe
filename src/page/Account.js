@@ -4,10 +4,14 @@ import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerAccount from '../component/form/FormDrawerAccount';
+import useAsync from '../hook/useAsync';
+import ServiceAccount from '../service/ServiceAccount';
 
 
 const Account = () => {
     const [open, setOpen] = useState(false);
+    const [id, setId] = useState();
+    const { data: account } = useAsync(() => ServiceAccount.getAllAccount())
     const columns = [
         {
             title: 'Tên tài khoản',
@@ -15,9 +19,9 @@ const Account = () => {
             key: 'tentk',
         },
         {
-            title: 'Mã NV',
-            dataIndex: 'manv',
-            key: 'manv',
+            title: 'Tên NV',
+            dataIndex: 'tennv',
+            key: 'tennv',
         },
         {
             title: 'Quyền',
@@ -37,7 +41,27 @@ const Account = () => {
     ];
 
 
+     const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+    account?.map((Item, i) => {
+        
+        data.push(
+            {
+                key: i + 1,
+                tentk: Item.TenTK,
+                tennv: Item.TenNV,
+                quyen: Item.Quyen,
+            }
+        );
+    }
+    )
     return (
         <>
             <FormDrawerAccount open={open} setOpen={setOpen} title={"Thêm tài khoản"} />

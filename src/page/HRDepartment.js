@@ -4,10 +4,13 @@ import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerHRDepartment from '../component/form/FormDrawerHRDepartment';
-
+import ServiceHRDepartment from '../service/ServiceHRDepartment';
+import useAsync from '../hook/useAsync';
 
 const HRDepartment = () => {
     const [open, setOpen] = useState(false);
+     const [id, setId] = useState();
+    const { data: hrdepartment } = useAsync(() => ServiceHRDepartment.getAllHRDepartment())
     const columns = [
         {
             title: 'Mã bộ phận',
@@ -31,7 +34,26 @@ const HRDepartment = () => {
         },
     ];
 
+    
+    const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+  
+    hrdepartment?.map((Item, i) => {
+        data.push({
+            key: i + 1,
+            magiamgia: Item.MaBP,
+            tenmagg: Item.TenBP,
+           
+        })
+
+    })
     return (
         <>
             <FormDrawerHRDepartment open={open} setOpen={setOpen} title={"Thêm bộ phận"} />

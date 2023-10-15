@@ -4,10 +4,14 @@ import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerDesignation from '../component/form/FormDrawerDesignation';
+import useAsync from '../hook/useAsync';
+import ServiceDesignation from '../service/ServiceDesignation';
 
 
 const Designation = () => {
     const [open, setOpen] = useState(false);
+     const [id, setId] = useState();
+    const { data: designation } = useAsync(() => ServiceDesignation.getAllDesignation())
     const columns = [
         {
             title: 'Mã chức vụ',
@@ -36,7 +40,27 @@ const Designation = () => {
         },
     ];
 
+     const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+    designation?.map((Item, i) => {
+       
+        data.push(
+            {
+                key: i + 1,
+                machucvu: Item.MaCV,
+                bophan: Item.TenBP,
+                tencongviec: Item.TenCV,
+            }
+        );
+    }
+    )
     return (
         <>
             <FormDrawerDesignation open={open} setOpen={setOpen} title={"Thêm chức vụ"} />
