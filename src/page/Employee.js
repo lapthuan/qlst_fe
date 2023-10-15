@@ -4,9 +4,15 @@ import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerEmployee from '../component/form/FormDrawerEmployee';
+import ServiceEmployee from '../service/ServiceEmployee';
+import useAsync from '../hook/useAsync';
+import moment from 'moment';
+
 
 const Employee = () => {
     const [open, setOpen] = useState(false);
+     const [id, setId] = useState();
+    const { data: employee } = useAsync(() => ServiceEmployee.getAllEmployee())
     const columns = [
         {
             title: 'Mã NV',
@@ -60,7 +66,33 @@ const Employee = () => {
         },
     ];
 
+     const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+    employee?.map((Item, i) => {
+        console.log(employee);
+ const ngaysinhFormatted = moment(Item.NgaySinh).format('DD/MM/YYYY HH:mm');
+        data.push(
+            {
+                key: i + 1,
+                manv: Item.MaNV,
+                machinhanh: Item.TenCN,
+                chucvu: Item.TenCV,
+                hoten: Item.TenNV,
+                ngaysinh: ngaysinhFormatted,
+                gioitinh: Item.GioiTinh,
+                diachi: Item.DiaChi,
+                sdt: Item.Sdt,
+            }
+        );
+    }
+    )
 
     return (
         <>

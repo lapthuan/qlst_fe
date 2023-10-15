@@ -4,11 +4,16 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerTypeOfMerchandise from '../component/form/FromDrawerTypeOfMerchandise';
+import useAsync from '../hook/useAsync';
+import ServiceTypeOfMerchandise from '../service/ServiceTypeOfMerchandise';
 
 
 
 const TypeOfMerchandise = () => {
     const [open, setOpen] = useState(false);
+    const [id, setId] = useState();
+    const { data: typeOfMerchandise } = useAsync(() => ServiceTypeOfMerchandise.getAllTypeOfMerchandise())
+
     const columns = [
         {
             title: 'Mã Loại hàng',
@@ -33,7 +38,24 @@ const TypeOfMerchandise = () => {
         },
     ];
 
+    const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+    console.log(typeOfMerchandise);
+    typeOfMerchandise?.map((Item, i) => {
+        data.push({
+            key: i + 1,
+            malh: Item.MaLH,
+            tenlh: Item.TenLH,
+        })
+    })
+    
 
     return (
         <>

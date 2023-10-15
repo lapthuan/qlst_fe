@@ -3,10 +3,15 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
+import useAsync from '../hook/useAsync';
+import ServiceManufacturer from '../service/ServiceManufacturer';
 
 
 const Manufacturer = () => {
     const [open, setOpen] = useState(false);
+    const [id, setId] = useState();
+    const { data: Manufacturer } = useAsync(() => ServiceManufacturer.getAllManufacturer())
+  
     const columns = [
         {
             title: 'Mã NSX',
@@ -40,7 +45,26 @@ const Manufacturer = () => {
         },
     ];
 
+    const handleDeleteClick = (id) => {
+        setId(id)
+    };
+    const handleEditClick = (id) => {
+        setId(id)
+        setOpen(true)
+    };
+
     let data = []
+    console.log(Manufacturer);
+    Manufacturer?.map((Item, i) => {
+        data.push({
+            key: i + 1,
+            mansx: Item.MaNsx,
+            tennsx: Item.TenNsx,
+            diachi: Item.Diachi,
+            sdt: Item.Sdt,
+        })
+
+    })
 
 
     return (
