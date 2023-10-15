@@ -3,35 +3,21 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
+import FormDrawerHRDepartment from '../component/form/FormDrawerHRDepartment';
 
 
 const HRDepartment = () => {
     const [open, setOpen] = useState(false);
     const columns = [
         {
-            title: 'Mã giảm giá',
+            title: 'Mã bộ phận',
             dataIndex: 'magiamgia',
             key: 'magiamgia',
         },
         {
-            title: 'Tên mã giảm giá',
+            title: 'Tên bộ phận',
             dataIndex: 'tenmagg',
             key: 'tenmagg',
-        },
-        {
-            title: 'Giá trị giảm',
-            dataIndex: 'giatrigiam',
-            key: 'giatrigiam',
-        },
-        {
-            title: 'Ngày áp dụng',
-            dataIndex: 'ngayapdung',
-            key: 'ngayapdung',
-        },
-        {
-            title: 'Ngày hết hạn',
-            dataIndex: 'ngayhethan',
-            key: 'ngayhethan',
         },
         {
             title: 'Công cụ',
@@ -48,14 +34,14 @@ const HRDepartment = () => {
     let data = []
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm nhà sản xuất"} />
+            <FormDrawerHRDepartment open={open} setOpen={setOpen} title={"Thêm bộ phận"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
-                <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
-                <Breadcrumb.Item>Nhà sản xuất</Breadcrumb.Item>
+                <Breadcrumb.Item>Quản trị</Breadcrumb.Item>
+                <Breadcrumb.Item>Bộ phận</Breadcrumb.Item>
 
             </Breadcrumb>
             <div className='page-container'>

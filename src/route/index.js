@@ -1,3 +1,4 @@
+import { Spin } from 'antd';
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -21,7 +22,9 @@ const Branch = lazy(() => import('../page/Branch'));
 
 const App = () => (
     <Router>
-        <Suspense fallback={<div>Đang tải</div>}>
+        <Suspense fallback={<Spin tip="Đang tải..." size="large">
+            <div className="content" />
+        </Spin>}>
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />

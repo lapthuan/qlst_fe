@@ -3,35 +3,26 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
+import FormDrawerDesignation from '../component/form/FormDrawerDesignation';
 
 
 const Designation = () => {
     const [open, setOpen] = useState(false);
     const columns = [
         {
-            title: 'Mã giảm giá',
-            dataIndex: 'magiamgia',
-            key: 'magiamgia',
+            title: 'Mã chức vụ',
+            dataIndex: 'machucvu',
+            key: 'machucvu',
         },
         {
-            title: 'Tên mã giảm giá',
-            dataIndex: 'tenmagg',
-            key: 'tenmagg',
+            title: 'Bộ phận',
+            dataIndex: 'bophan',
+            key: 'bophan',
         },
         {
-            title: 'Giá trị giảm',
-            dataIndex: 'giatrigiam',
-            key: 'giatrigiam',
-        },
-        {
-            title: 'Ngày áp dụng',
-            dataIndex: 'ngayapdung',
-            key: 'ngayapdung',
-        },
-        {
-            title: 'Ngày hết hạn',
-            dataIndex: 'ngayhethan',
-            key: 'ngayhethan',
+            title: 'Tên công việc',
+            dataIndex: 'tencongviec',
+            key: 'tencongviec',
         },
         {
             title: 'Công cụ',
@@ -48,14 +39,14 @@ const Designation = () => {
     let data = []
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm nhà sản xuất"} />
+            <FormDrawerDesignation open={open} setOpen={setOpen} title={"Thêm chức vụ"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
-                <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
-                <Breadcrumb.Item>Nhà sản xuất</Breadcrumb.Item>
+                <Breadcrumb.Item>Quản trị</Breadcrumb.Item>
+                <Breadcrumb.Item>Chức vụ</Breadcrumb.Item>
 
             </Breadcrumb>
             <div className='page-container'>

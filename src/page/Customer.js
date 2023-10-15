@@ -3,34 +3,45 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
+import FormDrawerCustomer from '../component/form/FormDrawerCustomer';
 
 const Customer = () => {
     const [open, setOpen] = useState(false);
     const columns = [
         {
-            title: 'Mã giảm giá',
-            dataIndex: 'magiamgia',
-            key: 'magiamgia',
+            title: 'Mã KH',
+            dataIndex: 'makh',
+            key: 'makh',
         },
         {
-            title: 'Tên mã giảm giá',
-            dataIndex: 'tenmagg',
-            key: 'tenmagg',
+            title: 'Chi nhánh',
+            dataIndex: 'machinhanh',
+            key: 'machinhanh',
         },
         {
-            title: 'Giá trị giảm',
-            dataIndex: 'giatrigiam',
-            key: 'giatrigiam',
+            title: 'Họ tên',
+            dataIndex: 'hoten',
+            key: 'hoten',
         },
         {
-            title: 'Ngày áp dụng',
-            dataIndex: 'ngayapdung',
-            key: 'ngayapdung',
+            title: 'Ngày sinh',
+            dataIndex: 'ngaysinh',
+            key: 'ngaysinh',
         },
         {
-            title: 'Ngày hết hạn',
-            dataIndex: 'ngayhethan',
-            key: 'ngayhethan',
+            title: 'Giới tính',
+            dataIndex: 'gioitinh',
+            key: 'gioitinh',
+        },
+        {
+            title: 'Địa chỉ',
+            dataIndex: 'diachi',
+            key: 'diachi',
+        },
+        {
+            title: 'SĐT',
+            dataIndex: 'sdt',
+            key: 'sdt',
         },
         {
             title: 'Công cụ',
@@ -47,13 +58,13 @@ const Customer = () => {
     let data = []
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm khách hàng"} />
+            <FormDrawerCustomer open={open} setOpen={setOpen} title={"Thêm khách hàng"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
-                <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
+                <Breadcrumb.Item>Quản trị</Breadcrumb.Item>
                 <Breadcrumb.Item>Khách hàng</Breadcrumb.Item>
 
             </Breadcrumb>

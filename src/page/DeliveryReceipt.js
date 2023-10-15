@@ -9,29 +9,29 @@ const DeliveryReceipt = () => {
     const [open, setOpen] = useState(false);
     const columns = [
         {
-            title: 'Mã giảm giá',
-            dataIndex: 'magiamgia',
-            key: 'magiamgia',
+            title: 'Mã phiếu nhập',
+            dataIndex: 'maphieunhap',
+            key: 'maphieunhap',
         },
         {
-            title: 'Tên mã giảm giá',
-            dataIndex: 'tenmagg',
-            key: 'tenmagg',
+            title: 'Nhân viên',
+            dataIndex: 'nhanvien',
+            key: 'nhanvien',
         },
         {
-            title: 'Giá trị giảm',
-            dataIndex: 'giatrigiam',
-            key: 'giatrigiam',
+            title: 'Kho',
+            dataIndex: 'kho',
+            key: 'kho',
         },
         {
-            title: 'Ngày áp dụng',
-            dataIndex: 'ngayapdung',
-            key: 'ngayapdung',
+            title: 'ĐVT',
+            dataIndex: 'dvt',
+            key: 'dvt',
         },
         {
-            title: 'Ngày hết hạn',
-            dataIndex: 'ngayhethan',
-            key: 'ngayhethan',
+            title: 'Ngày lập phiếu',
+            dataIndex: 'ngaylapphieu',
+            key: 'ngaylapphieu',
         },
         {
             title: 'Công cụ',
@@ -48,14 +48,14 @@ const DeliveryReceipt = () => {
     let data = []
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm nhà sản xuất"} />
+            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm phiếu nhập"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
-                <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
-                <Breadcrumb.Item>Nhà sản xuất</Breadcrumb.Item>
+                <Breadcrumb.Item>Chức năng</Breadcrumb.Item>
+                <Breadcrumb.Item>Phiếu nhập</Breadcrumb.Item>
 
             </Breadcrumb>
             <div className='page-container'>

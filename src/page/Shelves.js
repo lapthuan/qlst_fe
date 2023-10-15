@@ -8,29 +8,24 @@ const Shelves = () => {
     const [open, setOpen] = useState(false);
     const columns = [
         {
-            title: 'Mã giảm giá',
+            title: 'Mã kệ',
             dataIndex: 'magiamgia',
             key: 'magiamgia',
         },
         {
-            title: 'Tên mã giảm giá',
-            dataIndex: 'tenmagg',
-            key: 'tenmagg',
+            title: 'Mặt hàng',
+            dataIndex: 'mathang',
+            key: 'mathang',
         },
         {
-            title: 'Giá trị giảm',
-            dataIndex: 'giatrigiam',
-            key: 'giatrigiam',
+            title: 'Tên kệ',
+            dataIndex: 'tenke',
+            key: 'tenke',
         },
         {
-            title: 'Ngày áp dụng',
-            dataIndex: 'ngayapdung',
+            title: 'Vị trí',
+            dataIndex: 'vitri',
             key: 'ngayapdung',
-        },
-        {
-            title: 'Ngày hết hạn',
-            dataIndex: 'ngayhethan',
-            key: 'ngayhethan',
         },
         {
             title: 'Công cụ',
@@ -47,14 +42,14 @@ const Shelves = () => {
     let data = []
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm nhà sản xuất"} />
+            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm kệ"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
-                <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
-                <Breadcrumb.Item>Nhà sản xuất</Breadcrumb.Item>
+                <Breadcrumb.Item>Chức năng</Breadcrumb.Item>
+                <Breadcrumb.Item>Kệ</Breadcrumb.Item>
 
             </Breadcrumb>
             <div className='page-container'>

@@ -8,36 +8,37 @@ const Order = () => {
     const [open, setOpen] = useState(false);
     const columns = [
         {
-            title: 'Mã giảm giá',
+            title: 'Mã hóa đơn',
             dataIndex: 'magiamgia',
             key: 'magiamgia',
         },
         {
-            title: 'Tên mã giảm giá',
-            dataIndex: 'tenmagg',
-            key: 'tenmagg',
+            title: 'Tên nhân viên',
+            dataIndex: 'tennhanvien',
+            key: 'tennhanvien',
         },
         {
-            title: 'Giá trị giảm',
-            dataIndex: 'giatrigiam',
-            key: 'giatrigiam',
+            title: 'Tên khách hàng',
+            dataIndex: 'tenkhachhang',
+            key: 'tenkhachhang',
         },
         {
-            title: 'Ngày áp dụng',
-            dataIndex: 'ngayapdung',
-            key: 'ngayapdung',
+            title: 'Hình thức thanh toán',
+            dataIndex: 'hinhthucthanhtoan',
+            key: 'hinhthucthanhtoan',
         },
         {
-            title: 'Ngày hết hạn',
-            dataIndex: 'ngayhethan',
-            key: 'ngayhethan',
+            title: 'Sản phẩm',
+            key: 'sanpham',
+            render: (_, record) => (
+                <Button type="primary" >Xem</Button>
+            ),
         },
         {
             title: 'Công cụ',
             key: 'congcu',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="dashed" >Sửa</Button>
                     <Button type="primary" danger>Xóa</Button>
                 </Space >
             ),
@@ -47,26 +48,19 @@ const Order = () => {
     let data = []
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm nhà sản xuất"} />
+
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
-                <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
-                <Breadcrumb.Item>Nhà sản xuất</Breadcrumb.Item>
+
+                <Breadcrumb.Item>Hóa đơn</Breadcrumb.Item>
 
             </Breadcrumb>
             <div className='page-container'>
 
-                <Space direction="vertical">
-                    <Space wrap>
-                        <Button icon={<AiOutlinePlus />} type="primary" onClick={() => setOpen(!open)}>
-                            Thêm
-                        </Button>
-                    </Space>
 
-                </Space>
                 <Divider orientation="left" plain>
                     Danh sách
                 </Divider>

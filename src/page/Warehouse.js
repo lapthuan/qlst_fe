@@ -8,29 +8,24 @@ const Warehouse = () => {
     const [open, setOpen] = useState(false);
     const columns = [
         {
-            title: 'Mã giảm giá',
-            dataIndex: 'magiamgia',
-            key: 'magiamgia',
+            title: 'Mã kho',
+            dataIndex: 'makho',
+            key: 'makho',
         },
         {
-            title: 'Tên mã giảm giá',
-            dataIndex: 'tenmagg',
-            key: 'tenmagg',
+            title: 'Chi nhánh',
+            dataIndex: 'chinhanh',
+            key: 'chinhanh',
         },
         {
-            title: 'Giá trị giảm',
-            dataIndex: 'giatrigiam',
-            key: 'giatrigiam',
+            title: 'Tên kho',
+            dataIndex: 'tenkho',
+            key: 'tenkho',
         },
         {
-            title: 'Ngày áp dụng',
-            dataIndex: 'ngayapdung',
-            key: 'ngayapdung',
-        },
-        {
-            title: 'Ngày hết hạn',
-            dataIndex: 'ngayhethan',
-            key: 'ngayhethan',
+            title: 'Địa chỉ',
+            dataIndex: 'diachi',
+            key: 'diachi',
         },
         {
             title: 'Công cụ',
@@ -47,14 +42,14 @@ const Warehouse = () => {
     let data = []
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm nhà sản xuất"} />
+            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm kho"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
-                <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
-                <Breadcrumb.Item>Nhà sản xuất</Breadcrumb.Item>
+                <Breadcrumb.Item>Chức năng</Breadcrumb.Item>
+                <Breadcrumb.Item>Kho</Breadcrumb.Item>
 
             </Breadcrumb>
             <div className='page-container'>

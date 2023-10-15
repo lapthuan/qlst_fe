@@ -3,34 +3,50 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
+import FormDrawerEmployee from '../component/form/FormDrawerEmployee';
 
 const Employee = () => {
     const [open, setOpen] = useState(false);
     const columns = [
         {
-            title: 'Mã giảm giá',
-            dataIndex: 'magiamgia',
-            key: 'magiamgia',
+            title: 'Mã NV',
+            dataIndex: 'manv',
+            key: 'manv',
         },
         {
-            title: 'Tên mã giảm giá',
-            dataIndex: 'tenmagg',
-            key: 'tenmagg',
+            title: 'Chi nhánh',
+            dataIndex: 'machinhanh',
+            key: 'machinhanh',
         },
         {
-            title: 'Giá trị giảm',
-            dataIndex: 'giatrigiam',
-            key: 'giatrigiam',
+            title: 'Chức vụ',
+            dataIndex: 'chucvu',
+            key: 'chucvu',
         },
         {
-            title: 'Ngày áp dụng',
-            dataIndex: 'ngayapdung',
-            key: 'ngayapdung',
+            title: 'Họ tên',
+            dataIndex: 'hoten',
+            key: 'hoten',
         },
         {
-            title: 'Ngày hết hạn',
-            dataIndex: 'ngayhethan',
-            key: 'ngayhethan',
+            title: 'Ngày sinh',
+            dataIndex: 'ngaysinh',
+            key: 'ngaysinh',
+        },
+        {
+            title: 'Giới tính',
+            dataIndex: 'gioitinh',
+            key: 'gioitinh',
+        },
+        {
+            title: 'Địa chỉ',
+            dataIndex: 'diachi',
+            key: 'diachi',
+        },
+        {
+            title: 'SĐT',
+            dataIndex: 'sdt',
+            key: 'sdt',
         },
         {
             title: 'Công cụ',
@@ -48,13 +64,13 @@ const Employee = () => {
 
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm nhân viên"} />
+            <FormDrawerEmployee open={open} setOpen={setOpen} title={"Thêm nhân viên"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
-                <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
+                <Breadcrumb.Item>Quản trị</Breadcrumb.Item>
                 <Breadcrumb.Item>Nhân viên</Breadcrumb.Item>
 
             </Breadcrumb>

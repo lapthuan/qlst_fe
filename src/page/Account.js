@@ -3,35 +3,26 @@ import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
+import FormDrawerAccount from '../component/form/FormDrawerAccount';
 
 
 const Account = () => {
     const [open, setOpen] = useState(false);
     const columns = [
         {
-            title: 'Mã giảm giá',
-            dataIndex: 'magiamgia',
-            key: 'magiamgia',
+            title: 'Tên tài khoản',
+            dataIndex: 'tentk',
+            key: 'tentk',
         },
         {
-            title: 'Tên mã giảm giá',
-            dataIndex: 'tenmagg',
-            key: 'tenmagg',
+            title: 'Mã NV',
+            dataIndex: 'manv',
+            key: 'manv',
         },
         {
-            title: 'Giá trị giảm',
-            dataIndex: 'giatrigiam',
-            key: 'giatrigiam',
-        },
-        {
-            title: 'Ngày áp dụng',
-            dataIndex: 'ngayapdung',
-            key: 'ngayapdung',
-        },
-        {
-            title: 'Ngày hết hạn',
-            dataIndex: 'ngayhethan',
-            key: 'ngayhethan',
+            title: 'Quyền',
+            dataIndex: 'quyen',
+            key: 'quyen',
         },
         {
             title: 'Công cụ',
@@ -45,17 +36,18 @@ const Account = () => {
         },
     ];
 
+
     let data = []
     return (
         <>
-            <FormDrawerManufacturer open={open} setOpen={setOpen} title={"Thêm nhà sản xuất"} />
+            <FormDrawerAccount open={open} setOpen={setOpen} title={"Thêm tài khoản"} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
-                <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
-                <Breadcrumb.Item>Nhà sản xuất</Breadcrumb.Item>
+                <Breadcrumb.Item>Quản trị</Breadcrumb.Item>
+                <Breadcrumb.Item>Tài khoản</Breadcrumb.Item>
 
             </Breadcrumb>
             <div className='page-container'>
