@@ -56,18 +56,22 @@ const Account = () => {
     };
 
     let data = []
-    account?.map((Item, i) => {
+    if (account.message) {
 
-        data.push(
-            {
-                key: i + 1,
-                tentk: Item.TenTK,
-                tennv: Item.TenNV,
-                quyen: Item.Quyen == 1 ? "Admin" : "Nhân viên",
-            }
-        );
+    } else {
+        account?.map((Item, i) => {
+
+            data.push(
+                {
+                    key: i + 1,
+                    tentk: Item.TenTK,
+                    tennv: Item.TenNV,
+                    quyen: Item.Quyen == 1 ? "Admin" : "Nhân viên",
+                }
+            );
+        }
+        )
     }
-    )
     const submitModalDelete = async () => {
         const res = await ServiceAccount.deleteAccount(id)
 

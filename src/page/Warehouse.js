@@ -60,18 +60,19 @@ const Warehouse = () => {
     };
 
     let data = []
+    if (warehouse.message) {
 
-    warehouse?.map((Item, i) => {
-        data.push({
-            key: i + 1,
-            makho: Item.MaKho,
-            chinhanh: Item.TenCN,
-            tenkho: Item.TenKho,
-            diachi: Item.DiaChi,
-
+    } else {
+        warehouse?.map((Item, i) => {
+            data.push({
+                key: i + 1,
+                makho: Item.MaKho,
+                chinhanh: Item.TenCN,
+                tenkho: Item.TenKho,
+                diachi: Item.DiaChi,
+            })
         })
-
-    })
+    }
     const submitModalDelete = async () => {
         const res = await ServiceWarehouse.deleteWarehouse(id)
 

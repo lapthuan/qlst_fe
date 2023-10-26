@@ -52,15 +52,17 @@ const TypeOfMerchandise = () => {
     };
 
     let data = []
+    if (typeOfMerchandise.message) {
 
-    typeOfMerchandise?.map((Item, i) => {
-        data.push({
-            key: i + 1,
-            malh: Item.MaLH,
-            tenlh: Item.TenLH,
+    } else {
+        typeOfMerchandise?.map((Item, i) => {
+            data.push({
+                key: i + 1,
+                malh: Item.MaLH,
+                tenlh: Item.TenLH,
+            })
         })
-    })
-
+    }
     const submitModalDelete = async () => {
         const res = await ServiceTypeOfMerchandise.deleteTypeOfMerchandise(id)
         if (res.message == "Lỗi khi xóa loại hàng ở SQL Server") {

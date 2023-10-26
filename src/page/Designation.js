@@ -54,18 +54,22 @@ const Designation = () => {
     };
 
     let data = []
-    designation?.map((Item, i) => {
+    if (designation.message) {
 
-        data.push(
-            {
-                key: i + 1,
-                machucvu: Item.MaCV,
-                bophan: Item.TenBP,
-                tencongviec: Item.TenCV,
-            }
-        );
+    } else {
+        designation?.map((Item, i) => {
+
+            data.push(
+                {
+                    key: i + 1,
+                    machucvu: Item.MaCV,
+                    bophan: Item.TenBP,
+                    tencongviec: Item.TenCV,
+                }
+            );
+        }
+        )
     }
-    )
     const submitModalDelete = async () => {
         const res = await ServiceDesignation.deleteDesignation(id)
 

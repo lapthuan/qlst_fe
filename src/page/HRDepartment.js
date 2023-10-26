@@ -49,15 +49,18 @@ const HRDepartment = () => {
     };
 
     let data = []
+    if (hrdepartment.message) {
 
-    hrdepartment?.map((Item, i) => {
-        data.push({
-            key: i + 1,
-            mabophan: Item.MaBP,
-            tenbp: Item.TenBP,
+    } else {
+        hrdepartment?.map((Item, i) => {
+            data.push({
+                key: i + 1,
+                mabophan: Item.MaBP,
+                tenbp: Item.TenBP,
 
+            })
         })
-    })
+    }
     const submitModalDelete = async () => {
         const res = await ServiceHRDepartment.deleteHRDepartment(id)
 

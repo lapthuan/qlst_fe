@@ -74,19 +74,22 @@ const Order = () => {
     };
 
     let data = []
+    if (order.message) {
 
-    order?.map((Item, i) => {
-        const ngaylap = dayjs(Item.NgayLap).format('DD/MM/YYYY HH:mm')
-        data.push({
-            key: i + 1,
-            mahd: Item.MaHD,
-            tennhanvien: Item.TenNV,
-            tenkhachhang: Item.TenKH,
-            hinhthucthanhtoan: Item.HinhThucTT,
-            ngaylap: ngaylap
+    } else {
+        order?.map((Item, i) => {
+            const ngaylap = dayjs(Item.NgayLap).format('DD/MM/YYYY HH:mm')
+            data.push({
+                key: i + 1,
+                mahd: Item.MaHD,
+                tennhanvien: Item.TenNV,
+                tenkhachhang: Item.TenKH,
+                hinhthucthanhtoan: Item.HinhThucTT,
+                ngaylap: ngaylap
+            })
+
         })
-
-    })
+    }
     const submitModalDelete = async () => {
         const res = await ServiceOrder.deleteOrder(id)
         if (res.message) {

@@ -59,19 +59,22 @@ const Shelves = () => {
     };
 
     let data = []
+    if (shelves.message) {
 
-    shelves?.map((Item, i) => {
-        data.push({
-            key: i + 1,
-            make: Item.MaKe,
-            mathang: Item.TenMH,
-            tenke: Item.TenKe,
-            vitri: Item.Vitri,
+    } else {
+        shelves?.map((Item, i) => {
+            data.push({
+                key: i + 1,
+                make: Item.MaKe,
+                mathang: Item.TenMH,
+                tenke: Item.TenKe,
+                vitri: Item.Vitri,
 
+
+            })
 
         })
-
-    })
+    }
     const submitModalDelete = async () => {
         const res = await ServiceShelves.deleteShelves(id)
 

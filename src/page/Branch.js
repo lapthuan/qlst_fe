@@ -46,17 +46,20 @@ const Branch = () => {
     };
 
     let data = []
-  
-    branch?.map((Item, i) => {
-        data.push({
-            key: i + 1,
-            machinhanh: Item.MaCN,
-            tenchinhanh: Item.TenCN,
-            diachi: Item.DiaChi,
-            sdt: Item.Sdt,
-        })
+    if (branch.message) {
 
-    })
+    } else {
+        branch?.map((Item, i) => {
+            data.push({
+                key: i + 1,
+                machinhanh: Item.MaCN,
+                tenchinhanh: Item.TenCN,
+                diachi: Item.DiaChi,
+                sdt: Item.Sdt,
+            })
+
+        })
+    }
     return (
         <>
             <Breadcrumb

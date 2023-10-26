@@ -65,22 +65,26 @@ const Coupon = () => {
     };
 
     let data = []
-    coupon?.map((Item, i) => {
-        const ngayApDungFormatted = dayjs(Item.NgayApDung).format('DD/MM/YYYY HH:mm');
-        const ngayHetHanFormatted = dayjs(Item.NgayHetHan).format('DD/MM/YYYY HH:mm');
+    if (coupon.message) {
 
-        data.push(
-            {
-                key: i + 1,
-                magiamgia: Item.MaGiamGia,
-                tenmagg: Item.TenMaGG,
-                giatrigiam: Item.GiaTriGiam,
-                ngayapdung: ngayApDungFormatted,
-                ngayhethan: ngayHetHanFormatted,
-            }
-        );
+    } else {
+        coupon?.map((Item, i) => {
+            const ngayApDungFormatted = dayjs(Item.NgayApDung).format('DD/MM/YYYY HH:mm');
+            const ngayHetHanFormatted = dayjs(Item.NgayHetHan).format('DD/MM/YYYY HH:mm');
+
+            data.push(
+                {
+                    key: i + 1,
+                    magiamgia: Item.MaGiamGia,
+                    tenmagg: Item.TenMaGG,
+                    giatrigiam: Item.GiaTriGiam,
+                    ngayapdung: ngayApDungFormatted,
+                    ngayhethan: ngayHetHanFormatted,
+                }
+            );
+        }
+        )
     }
-    )
     const submitModalDelete = async () => {
         const res = await ServiceCoupon.deleteCoupon(id)
         if (res.message == "Lỗi khi xóa phiếu giảm giá ở SQL Server") {

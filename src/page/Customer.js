@@ -75,25 +75,29 @@ const Customer = () => {
     };
 
     let data = []
-    customer?.map((Item, i) => {
+    if (customer.message) {
 
-        const ngaysinh = dayjs(Item.NgaySinh).format('DD/MM/YYYY');
+    } else {
+        customer?.map((Item, i) => {
 
-        data.push(
-            {
-                key: i + 1,
-                makh: Item.MaKH,
-                machinhanh: Item.TenCN,
-                hoten: Item.TenKH,
-                ngaysinh: ngaysinh,
-                gioitinh: Item.GioiTinh,
-                diachi: Item.Diachi,
-                sdt: Item.Sdt,
+            const ngaysinh = dayjs(Item.NgaySinh).format('DD/MM/YYYY');
 
-            }
-        );
+            data.push(
+                {
+                    key: i + 1,
+                    makh: Item.MaKH,
+                    machinhanh: Item.TenCN,
+                    hoten: Item.TenKH,
+                    ngaysinh: ngaysinh,
+                    gioitinh: Item.GioiTinh,
+                    diachi: Item.Diachi,
+                    sdt: Item.Sdt,
+
+                }
+            );
+        }
+        )
     }
-    )
     const submitModalDelete = async () => {
         const res = await ServiceCustomer.deleteCustomer(id)
 

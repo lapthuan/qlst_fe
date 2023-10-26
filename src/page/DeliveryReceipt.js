@@ -77,19 +77,22 @@ const DeliveryReceipt = () => {
     };
 
     let data = []
+    if (deliveryReceipt.message) {
 
-    deliveryReceipt?.map((Item, i) => {
-        const ngaylapphieu = dayjs(Item.NgayLapPhieu).format('DD/MM/YYYY HH:mm');
-        data.push({
-            key: i + 1,
-            maphieunhap: Item.MaPhieuNhap,
-            nhanvien: Item.TenNV,
-            kho: Item.TenKho,
-            dvt: Item.DVT,
-            ngaylapphieu: ngaylapphieu,
+    } else {
+        deliveryReceipt?.map((Item, i) => {
+            const ngaylapphieu = dayjs(Item.NgayLapPhieu).format('DD/MM/YYYY HH:mm');
+            data.push({
+                key: i + 1,
+                maphieunhap: Item.MaPhieuNhap,
+                nhanvien: Item.TenNV,
+                kho: Item.TenKho,
+                dvt: Item.DVT,
+                ngaylapphieu: ngaylapphieu,
+            })
+
         })
-
-    })
+    }
     const submitModalDelete = async () => {
         const res = await ServiceDeliveryReceipt.deleteDeliveryReceipt(id)
 

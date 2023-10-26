@@ -82,24 +82,27 @@ const Employee = () => {
     };
 
     let data = []
-    employee?.map((Item, i) => {
+    if (employee.message) {
 
-        const ngaysinhFormatted = dayjs(Item.NgaySinh).format('DD/MM/YYYY');
-        data.push(
-            {
-                key: i + 1,
-                manv: Item.MaNV,
-                machinhanh: Item.TenCN,
-                chucvu: Item.TenCV,
-                hoten: Item.TenNV,
-                ngaysinh: ngaysinhFormatted,
-                gioitinh: Item.GioiTinh,
-                diachi: Item.DiaChi,
-                sdt: Item.Sdt,
-            }
-        );
+    } else {
+        employee?.map((Item, i) => {
+            const ngaysinhFormatted = dayjs(Item.NgaySinh).format('DD/MM/YYYY');
+            data.push(
+                {
+                    key: i + 1,
+                    manv: Item.MaNV,
+                    machinhanh: Item.TenCN,
+                    chucvu: Item.TenCV,
+                    hoten: Item.TenNV,
+                    ngaysinh: ngaysinhFormatted,
+                    gioitinh: Item.GioiTinh,
+                    diachi: Item.DiaChi,
+                    sdt: Item.Sdt,
+                }
+            );
+        }
+        )
     }
-    )
     const submitModalDelete = async () => {
         const res = await ServiceEmployee.deleteEmployee(id)
 

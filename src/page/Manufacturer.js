@@ -58,17 +58,20 @@ const Manufacturer = () => {
     };
 
     let data = []
+    if (Manufacturer.message) {
 
-    Manufacturer?.map((Item, i) => {
-        data.push({
-            key: i + 1,
-            mansx: Item.MaNsx,
-            tennsx: Item.TenNsx,
-            diachi: Item.Diachi,
-            sdt: Item.Sdt,
+    } else {
+        Manufacturer?.map((Item, i) => {
+            data.push({
+                key: i + 1,
+                mansx: Item.MaNsx,
+                tennsx: Item.TenNsx,
+                diachi: Item.Diachi,
+                sdt: Item.Sdt,
+            })
+
         })
-
-    })
+    }
     const submitModalDelete = async () => {
         const res = await ServiceManufacturer.deleteManufacturer(id)
 

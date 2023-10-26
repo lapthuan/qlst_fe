@@ -78,22 +78,26 @@ const Merchandise = () => {
     };
 
     let data = []
-    Merchandise?.map((dt, i) => {
-        data.push(
-            {
-                key: i + 1,
-                mamh: dt.MaMH,
-                malh: dt.TenLH,
-                mansx: dt.TenNsx,
-                magiamgia: dt.MaGiamGia,
-                tenmh: dt.TenMH,
-                gia: dt.GiamGia,
-                mota: dt.MoTa,
-                dvt: dt.DVT,
-            }
+    if (Merchandise.message) {
+
+    } else {
+        Merchandise?.map((dt, i) => {
+            data.push(
+                {
+                    key: i + 1,
+                    mamh: dt.MaMH,
+                    malh: dt.TenLH,
+                    mansx: dt.TenNsx,
+                    magiamgia: dt.MaGiamGia,
+                    tenmh: dt.TenMH,
+                    gia: dt.GiamGia,
+                    mota: dt.MoTa,
+                    dvt: dt.DVT,
+                }
+            )
+        }
         )
     }
-    )
     const submitModalDelete = async () => {
         const res = await ServicesMerchandise.deleteMerchandise(id)
         if (res.message == "Lỗi khi xóa mặt hàng ở SQL Server") {
