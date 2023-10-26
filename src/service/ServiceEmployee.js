@@ -1,13 +1,22 @@
 import requests from "./httpService";
 
-const ServiceEmployee  = {
+const ServiceEmployee = {
     getAllEmployee: async () => {
         return requests.get(`/nhanvien`);
     },
     getAEmployee: async (id) => {
         return requests.get(`/nhanvien/${id}`);
     },
+    createEmployee: async (body) => {
+        return requests.post(`/nhanvien`, body);
+    },
+    editEmployee: async (body, id) => {
+        return requests.put(`/nhanvien/${id}`, body);
+    },
+    deleteEmployee: async (id) => {
+        return requests.delete(`/nhanvien/${id}`);
+    }
 
 }
 
-export default ServiceEmployee ;
+export default ServiceEmployee;

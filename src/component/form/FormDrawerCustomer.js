@@ -1,12 +1,93 @@
 
 import CustomDrawer from "../drawer/CustomDrawer";
-import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from "antd";
+import { Button, Col, DatePicker, Form, Input, message, Row, Select, Space } from "antd";
+import useAsync from "../../hook/useAsync";
+import ServiceBranch from "../../service/ServiceBranch";
+import dayjs from "dayjs";
+import ServiceCustomer from "../../service/ServiceCustomer";
+import { useEffect } from "react";
 const { Option } = Select;
 
-const FormDrawerCustomer = ({ open, setOpen, title }) => {
+const FormDrawerCustomer = ({ open, setOpen, title, id, setId }) => {
+    const [form] = Form.useForm();
+    const { data: branch } = useAsync(() => ServiceBranch.getAllBranch())
+    useEffect(() => {
+
+        if (id) {
+            (async () => {
+                const res = await ServiceCustomer.getACustomer(id)
+
+                if (res) {
+
+                    const ngaysinhfm = dayjs(res[0].NgaySinh, 'YYYY-MM-DD');
+
+                    form.setFieldsValue({
+                        makh: res[0].MaKH,
+                        machinhanh: res[0].MaCN,
+                        tenkh: res[0].TenKH,
+                        gioitinh: res[0].GioiTinh,
+                        diachi: res[0].Diachi,
+                        sdt: res[0].Sdt,
+                        ngaysinh: ngaysinhfm
+                    });
+                }
+            })();
+        } else {
+            form.resetFields()
+        }
+    }, [id])
+    const onFinish = async (values) => {
+        if (id) {
+            const ngaysinh = dayjs(values.ngaysinh).format('YYYY-MM-DD HH:mm:ss')
+            const body = {
+                "reqTenKH": values.tenkh,
+                "reqMaCN": values.machinhanh,
+                "reqNgaySinh": ngaysinh,
+                "reqGioiTinh": values.gioitinh,
+                "reqDiaChi": values.diachi,
+                "reqSdt": values.sdt,
+            }
+
+            const res = await ServiceCustomer.editCustomer(body, id)
+
+            if (res.message) {
+                message.success("Sửa dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 2000);
+            }
+
+        } else {
+            const ngaysinh = dayjs(values.ngaysinh).format('YYYY-MM-DD HH:mm:ss')
+
+            const body = {
+                "reqMaKH": values.makh,
+                "reqTenKH": values.tenkh,
+                "reqMaCN": values.machinhanh,
+                "reqNgaySinh": ngaysinh,
+                "reqGioiTinh": values.gioitinh,
+                "reqDiaChi": values.diachi,
+                "reqSdt": values.sdt,
+            }
+
+            const res = await ServiceCustomer.createCustomer(body)
+           
+            if (res.message == "Khách hàng đã tồn tại!") {
+                message.warning("Mã khách hàng đã tồn tại!")
+            } else if (res.message == "Đồng bộ thêm khách hàng thành công") {
+                message.success("Thêm dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 2000);
+            }
+
+        }
+
+
+    };
     return (
-        <CustomDrawer open={open} setOpen={setOpen} title={title} >
-            <Form layout="vertical" hideRequiredMark>
+        <CustomDrawer open={open} setOpen={setOpen} title={(id ? "Sửa " : "Thêm ") + title} setId={setId} >
+            <Form layout="vertical" form={form} onFinish={onFinish} hideRequiredMark>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
@@ -50,8 +131,9 @@ const FormDrawerCustomer = ({ open, setOpen, title }) => {
                             ]}
                         >
                             <Select placeholder="Chọn chi nhánh">
-                                <Option value="Nam">Nam</Option>
-                                <Option value="Nữ">Nữ</Option>
+                                {branch.map((item, i) => (
+                                    <Option key={i + 1} value={item.MaCN}>{item.TenCN}</Option>
+                                ))}
                             </Select>
                         </Form.Item>
                     </Col>
@@ -127,7 +209,7 @@ const FormDrawerCustomer = ({ open, setOpen, title }) => {
                     <Space align="end">
                         <Button onClick={() => setOpen(!open)}>Hủy</Button>
                         <Button type="primary" htmlType="submit">
-                            Thêm
+                            {id ? "Sửa" : " Thêm"}
                         </Button>
                     </Space>
                 </Form.Item>

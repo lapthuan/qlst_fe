@@ -3,6 +3,8 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Layout from "../component/layout/layout"
+import OrderDetail from '../page/OrderDetail';
+
 const Home = lazy(() => import('../page/Home'));
 const Merchandise = lazy(() => import('../page/Merchandise'));
 const TypeOfMerchandise = lazy(() => import('../page/TypeOfMerchandise'));
@@ -16,6 +18,7 @@ const HRDepartment = lazy(() => import('../page/HRDepartment'));
 const Warehouse = lazy(() => import('../page/Warehouse'));
 const Shelves = lazy(() => import('../page/Shelves'));
 const DeliveryReceipt = lazy(() => import('../page/DeliveryReceipt'));
+const DeliveryReceiptDetail = lazy(() => import('../page/DeliveryReceiptDetail'));
 const Order = lazy(() => import('../page/Order'));
 const Branch = lazy(() => import('../page/Branch'));
 
@@ -40,7 +43,9 @@ const App = () => (
                     <Route path="/kho" element={<Warehouse />} />
                     <Route path="/ke" element={<Shelves />} />
                     <Route path="/phieunhap" element={<DeliveryReceipt />} />
+                    <Route path="/phieunhap/:iddr" element={<DeliveryReceiptDetail />} />
                     <Route path="/hoadon" element={<Order />} />
+                    <Route path="/hoadon/:idhd" element={<OrderDetail />} />
                     <Route path="/chinhanh" element={<Branch />} />
 
                 </Route>

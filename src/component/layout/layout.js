@@ -51,7 +51,6 @@ const App = () => {
         setTheme(value ? 'dark' : 'light');
     };
     const onClick = (e) => {
-        console.log('click ', e);
         setCurrent(e.key);
     };
     return (
@@ -140,7 +139,7 @@ const App = () => {
                         textAlign: "center"
                     }}
                 >
-                    Ant Design ©2023 Created by Ant UED
+                    Quế Trần & Tú Quyên ©2023
                 </Footer>
             </Layout>
         </Layout >

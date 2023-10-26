@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Divider, Space } from 'antd';
+import { Breadcrumb, Button, Divider, message, Space } from 'antd';
 import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -6,12 +6,15 @@ import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerAccount from '../component/form/FormDrawerAccount';
 import useAsync from '../hook/useAsync';
 import ServiceAccount from '../service/ServiceAccount';
+import ModalDelete from '../component/modal/modalDelete';
 
 
 const Account = () => {
     const [open, setOpen] = useState(false);
     const [id, setId] = useState();
     const { data: account } = useAsync(() => ServiceAccount.getAllAccount())
+    const [openModal, setOpenModal] = useState(false);
+
     const columns = [
         {
             title: 'Tên tài khoản',
@@ -30,19 +33,22 @@ const Account = () => {
         },
         {
             title: 'Công cụ',
+            dataIndex: 'tentk',
             key: 'congcu',
-            render: (_, record) => (
+            render: (id) => (
                 <Space size="middle">
-                    <Button type="dashed" >Sửa</Button>
-                    <Button type="primary" danger>Xóa</Button>
+                    <Button type="dashed" onClick={() => handleEditClick(id)}>Sửa</Button>
+                    <Button type="primary" danger onClick={() => handleDeleteClick(id)}>Xóa</Button>
+
                 </Space >
             ),
         },
     ];
 
 
-     const handleDeleteClick = (id) => {
+    const handleDeleteClick = (id) => {
         setId(id)
+        setOpenModal(true)
     };
     const handleEditClick = (id) => {
         setId(id)
@@ -51,20 +57,33 @@ const Account = () => {
 
     let data = []
     account?.map((Item, i) => {
-        
+
         data.push(
             {
                 key: i + 1,
                 tentk: Item.TenTK,
                 tennv: Item.TenNV,
-                quyen: Item.Quyen,
+                quyen: Item.Quyen == 1 ? "Admin" : "Nhân viên",
             }
         );
     }
     )
+    const submitModalDelete = async () => {
+        const res = await ServiceAccount.deleteAccount(id)
+
+        if (res.message) {
+            message.success("Xóa dữ liệu thành công")
+            setOpenModal(false)
+            setTimeout(() => {
+                window.location.reload(false);
+            }, 2000);
+        }
+
+    }
     return (
         <>
-            <FormDrawerAccount open={open} setOpen={setOpen} title={"Thêm tài khoản"} />
+            <ModalDelete openModal={openModal} setOpenModal={setOpenModal} submitModal={submitModalDelete} />
+            <FormDrawerAccount open={open} setOpen={setOpen} title={" tài khoản"} id={id} setId={setId} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',

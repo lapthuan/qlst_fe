@@ -1,12 +1,76 @@
 
 import CustomDrawer from "../drawer/CustomDrawer";
-import { Button, Col, Form, Input, Row, Select, Space } from "antd";
+import { Button, Col, Form, Input, message, Row, Select, Space } from "antd";
+import ServiceWarehouse from "../../service/ServiceWarehouse";
+import { useEffect } from "react";
+import ServiceBranch from "../../service/ServiceBranch";
+import useAsync from "../../hook/useAsync";
 const { Option } = Select;
 
-const FormDrawerWarehouse = ({ open, setOpen, title }) => {
+const FormDrawerWarehouse = ({ open, setOpen, title, id, setId }) => {
+    const [form] = Form.useForm();
+    const { data: branch } = useAsync(() => ServiceBranch.getAllBranch())
+    useEffect(() => {
+        if (id) {
+            (async () => {
+                const res = await ServiceWarehouse.getWarehouse(id)
+                if (res) {
+                    form.setFieldsValue({
+                        makho: res[0].MaKho,
+                        machinhanh: res[0].MaCN,
+                        tenkho: res[0].TenKho,
+                        diachi: res[0].DiaChi,
+
+                    });
+                }
+            })();
+        } else {
+            form.resetFields()
+        }
+    }, [id])
+    const onFinish = async (values) => {
+        if (id) {
+
+            const body = {
+                "reqMaCN": values.machinhanh,
+                "reqTenKho": values.tenkho,
+                "reqDiaChi": values.diachi,
+            }
+
+            const res = await ServiceWarehouse.editWarehouse(body, id)
+
+            if (res.message) {
+                message.success("Sửa dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 2000);
+            }
+
+        } else {
+
+            const body = {
+                "reqMaKho": values.makho,
+                "reqMaCN": values.machinhanh,
+                "reqTenKho": values.tenkho,
+                "reqDiaChi": values.diachi,
+            }
+
+            const res = await ServiceWarehouse.createWarehouse(body)
+       
+            if (res.message == "Kho đã tồn tại") {
+                message.warning("Mã kho đã tồn tại!")
+            } else if (res.message == "Đồng bộ thêm kho thành công") {
+                message.success("Thêm dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 2000);
+            }
+
+        }
+    };
     return (
-        <CustomDrawer open={open} setOpen={setOpen} title={title} >
-            <Form layout="vertical" hideRequiredMark>
+        <CustomDrawer open={open} setOpen={setOpen} title={(id ? "Sửa " : "Thêm ") + title} setId={setId}  >
+            <Form layout="vertical" form={form} onFinish={onFinish} hideRequiredMark>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
@@ -19,7 +83,7 @@ const FormDrawerWarehouse = ({ open, setOpen, title }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="Nhập mã kho" />
+                            <Input disabled={id ? true : false} placeholder="Nhập mã kho" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -51,8 +115,9 @@ const FormDrawerWarehouse = ({ open, setOpen, title }) => {
                             ]}
                         >
                             <Select placeholder="Chọn chi nhánh">
-                                <Option value="Nam">Nam</Option>
-                                <Option value="Nữ">Nữ</Option>
+                                {branch.map((item, i) => (
+                                    <Option key={i + 1} value={item.MaCN}>{item.TenCN}</Option>
+                                ))}
                             </Select>
                         </Form.Item>
                     </Col>
@@ -79,7 +144,7 @@ const FormDrawerWarehouse = ({ open, setOpen, title }) => {
                     <Space align="end">
                         <Button onClick={() => setOpen(!open)}>Hủy</Button>
                         <Button type="primary" htmlType="submit">
-                            Thêm
+                            {id ? "Sửa" : " Thêm"}
                         </Button>
                     </Space>
                 </Form.Item>

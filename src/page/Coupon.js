@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Divider, Space } from 'antd';
+import { Breadcrumb, Button, Divider, message, Space } from 'antd';
 import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -6,12 +6,14 @@ import FormDrawerCoupon from '../component/form/FormDrawerCoupon';
 import useAsync from '../hook/useAsync';
 import ServiceCoupon from '../service/ServiceCoupon';
 import dayjs from 'dayjs';
+import ModalDelete from '../component/modal/modalDelete';
 
 
 const Coupon = () => {
     const [open, setOpen] = useState(false);
     const [id, setId] = useState();
     const { data: coupon } = useAsync(() => ServiceCoupon.getAllCoupon())
+    const [openModal, setOpenModal] = useState(false);
 
     const columns = [
         {
@@ -42,10 +44,12 @@ const Coupon = () => {
         {
             title: 'Công cụ',
             key: 'congcu',
-            render: (_, record) => (
+            dataIndex: 'magiamgia',
+            render: (id) => (
                 <Space size="middle">
-                    <Button type="dashed" >Sửa</Button>
-                    <Button type="primary" danger>Xóa</Button>
+                    <Button type="dashed" onClick={() => handleEditClick(id)}>Sửa</Button>
+                    <Button type="primary" danger onClick={() => handleDeleteClick(id)}>Xóa</Button>
+
                 </Space >
             ),
         },
@@ -53,6 +57,7 @@ const Coupon = () => {
 
     const handleDeleteClick = (id) => {
         setId(id)
+        setOpenModal(true)
     };
     const handleEditClick = (id) => {
         setId(id)
@@ -76,10 +81,25 @@ const Coupon = () => {
         );
     }
     )
+    const submitModalDelete = async () => {
+        const res = await ServiceCoupon.deleteCoupon(id)
+        if (res.message == "Lỗi khi xóa phiếu giảm giá ở SQL Server") {
+            message.success("Dữ liệu này là khóa chính cần xóa các bảng phụ thuộc trước !")
+            setOpenModal(false)
+        } else if (res.message == "Đồng bộ xóa phiếu giảm giá thành công") {
+            message.success("Xóa dữ liệu thành công")
+            setOpenModal(false)
+            setTimeout(() => {
+                window.location.reload(false);
+            }, 2000);
+        }
+
+    }
 
     return (
         <>
-            <FormDrawerCoupon open={open} setOpen={setOpen} title={"Thêm phiếu giảm giá"} />
+            <ModalDelete openModal={openModal} setOpenModal={setOpenModal} submitModal={submitModalDelete} />
+            <FormDrawerCoupon open={open} setOpen={setOpen} title={" phiếu giảm giá"} id={id} setId={setId} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',

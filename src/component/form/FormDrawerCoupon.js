@@ -1,12 +1,94 @@
 
 import CustomDrawer from "../drawer/CustomDrawer";
-import { Button, Col, DatePicker, Form, Input, Row, Space } from "antd";
+import { Button, Col, DatePicker, Form, Input, message, Row, Space } from "antd";
 import dayjs from "dayjs";
+import { useEffect } from "react";
+import ServiceManufacturer from "../../service/ServiceManufacturer";
+import ServiceCoupon from "../../service/ServiceCoupon";
 
-const FormDrawerCoupon = ({ open, setOpen, title }) => {
+const FormDrawerCoupon = ({ open, setOpen, title, id, setId }) => {
+    const [form] = Form.useForm();
+
+
+    useEffect(() => {
+
+        if (id) {
+            (async () => {
+                const res = await ServiceCoupon.getACoupon(id)
+            
+                if (res) {
+
+                    const startDate = dayjs(res[0].NgayApDung, 'YYYY-MM-DD HH:mm');
+                    const endDate = dayjs(res[0].NgayHetHan, 'YYYY-MM-DD HH:mm');
+                    form.setFieldsValue({
+
+                        magiamgia: res[0].MaGiamGia,
+                        tenmgg: res[0].TenMaGG,
+                        giatrigiam: res[0].GiaTriGiam,
+                        ngay: [startDate, endDate],
+
+                    });
+
+                }
+            })();
+        } else {
+            form.resetFields()
+        }
+    }, [id])
+    const onFinish = async (values) => {
+        if (id) {
+            const ngayapdung = dayjs(values.ngay[0]).format('YYYY-MM-DD HH:mm:ss')
+            const ngayhethan = dayjs(values.ngay[1]).format('YYYY-MM-DD HH:mm:ss')
+            const body = {
+                "reqTenMaGG": values.tenmgg,
+                "reqGiaTriGiam": values.giatrigiam,
+                "reqNgayApDung": ngayapdung,
+                "reqNgayHetHan": ngayhethan
+
+            }
+
+            const res = await ServiceCoupon.editCoupon(body, id)
+
+            if (res.message) {
+                message.success("Sửa dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 2000);
+            }
+
+        } else {
+
+            const ngayapdung = dayjs(values.ngay[0]).format('YYYY-MM-DD HH:mm:ss')
+            const ngayhethan = dayjs(values.ngay[1]).format('YYYY-MM-DD HH:mm:ss')
+
+            const body = {
+                "reqMaGiamGia": values.magiamgia,
+                "reqTenMaGG": values.tenmgg,
+                "reqGiaTriGiam": values.giatrigiam,
+                "reqNgayApDung": ngayapdung,
+                "reqNgayHetHan": ngayhethan
+
+            }
+
+            const res = await ServiceCoupon.createCoupon(body)
+
+            if (res.message == "phiếu giảm giá đã tồn tại") {
+                message.warning("Mã phiếu giảm giá đã tồn tại!")
+            } else if (res.message == "Đồng bộ thêm phiếu giảm giá thành công") {
+                message.success("Thêm dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 2000);
+            }
+
+        }
+
+
+    };
+
     return (
-        <CustomDrawer open={open} setOpen={setOpen} title={title} >
-            <Form layout="vertical" hideRequiredMark>
+        <CustomDrawer open={open} setOpen={setOpen} title={(id ? "Sửa " : "Thêm ") + title} setId={setId}>
+            <Form layout="vertical" form={form} onFinish={onFinish} hideRequiredMark>
                 <Row gutter={16}>
                     <Col span={8}>
                         <Form.Item
@@ -19,7 +101,7 @@ const FormDrawerCoupon = ({ open, setOpen, title }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="Nhập mã giảm giá" />
+                            <Input disabled={id ? true : false} placeholder="Nhập mã giảm giá" />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -38,7 +120,7 @@ const FormDrawerCoupon = ({ open, setOpen, title }) => {
                     </Col>
                     <Col span={8} >
                         <Form.Item
-                            name="sdt"
+                            name="giatrigiam"
                             label="Giá trị giảm"
                             rules={[
                                 {
@@ -55,7 +137,7 @@ const FormDrawerCoupon = ({ open, setOpen, title }) => {
                 <Row gutter={16}>
                     <Col span={24}>
                         <Form.Item
-                            name="ngày"
+                            name="ngay"
                             label="Ngày"
                             rules={[
                                 {
@@ -65,6 +147,7 @@ const FormDrawerCoupon = ({ open, setOpen, title }) => {
                             ]}
                         >
                             <DatePicker.RangePicker
+
                                 style={{ width: '80%' }}
                                 placeholder={["Ngày áp dụng", "Ngày hết hạn"]}
                                 showTime={{
@@ -81,7 +164,7 @@ const FormDrawerCoupon = ({ open, setOpen, title }) => {
                     <Space align="end">
                         <Button onClick={() => setOpen(!open)}>Hủy</Button>
                         <Button type="primary" htmlType="submit">
-                            Thêm
+                            {id ? "Sửa" : " Thêm"}
                         </Button>
                     </Space>
                 </Form.Item>

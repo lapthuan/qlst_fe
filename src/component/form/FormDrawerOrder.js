@@ -7,25 +7,28 @@ import ServiceDeliveryReceipt from "../../service/ServiceDeliveryReceipt";
 import useAsync from "../../hook/useAsync";
 import { useEffect } from "react";
 import dayjs from "dayjs";
+import ServiceCustomer from "../../service/ServiceCustomer";
+import ServiceOrder from "../../service/ServiceOrder";
 const { Option } = Select;
 
-const FormDrawerDeliveryReceipt = ({ open, setOpen, title, id, setId }) => {
+const FormDrawerOrder = ({ open, setOpen, title, id, setId }) => {
     const [form] = Form.useForm();
-    const { data: Warehouse } = useAsync(() => ServiceWarehouse.getAllWarehouse())
+    const { data: Customer } = useAsync(() => ServiceCustomer.getAllCustomer())
     const { data: Employee } = useAsync(() => ServiceEmployee.getAllEmployee())
     useEffect(() => {
         if (id) {
             (async () => {
-                const res = await ServiceDeliveryReceipt.getDeliveryReceipt(id)
+                const res = await ServiceOrder.getOrder(id)
                 if (res) {
-                    const ngaylp = dayjs(res[0].NgayLapPhieu, 'YYYY-MM-DD');
+                    const ngaylap = dayjs(res[0].NgayLap, 'YYYY-MM-DD');
+
 
                     form.setFieldsValue({
-                        maphieunhap: res[0].MaPhieuNhap,
+                        mahoadon: res[0].MaHD,
                         manv: res[0].MaNV,
-                        makho: res[0].MaKho,
-                        dvt: res[0].DVT,
-                        ngaylapphieu: ngaylp,
+                        makh: res[0].MaKH,
+                        hinhthuctt: res[0].HinhThucTT,
+                        ngaylap: ngaylap,
 
                     });
                 }
@@ -36,16 +39,18 @@ const FormDrawerDeliveryReceipt = ({ open, setOpen, title, id, setId }) => {
     }, [id])
     const onFinish = async (values) => {
         if (id) {
-            const ngaylapphieu = dayjs(values.ngaylapphieu).format('YYYY-MM-DD')
+
+            const ngaylap = dayjs(values.ngaylap).format('YYYY-MM-DD HH:mm')
 
             const body = {
                 "reqMaNV": values.manv,
-                "reqMaKho": values.makho,
-                "reqDVT": values.dvt,
-                "reqNgayLapPhieu": ngaylapphieu,
+                "reqMaKH": values.makh,
+                "reqHinhThucTT": values.hinhthuctt,
+                "reqNgayLap": ngaylap,
+
             }
 
-            const res = await ServiceDeliveryReceipt.editDeliveryReceipt(body, id)
+            const res = await ServiceOrder.editOrder(body, id)
 
             if (res.message) {
                 message.success("Sửa dữ liệu thành công và đồng bộ dữ liệu thành công!")
@@ -55,20 +60,21 @@ const FormDrawerDeliveryReceipt = ({ open, setOpen, title, id, setId }) => {
             }
 
         } else {
-            const ngaylapphieu = dayjs(values.ngaylapphieu).format('YYYY-MM-DD')
+            const ngaylap = dayjs(values.ngaylap).format('YYYY-MM-DD HH:mm')
 
             const body = {
-                "reqMaPhieuNhap": values.maphieunhap,
+                "reqMaHD": values.mahoadon,
                 "reqMaNV": values.manv,
-                "reqMaKho": values.makho,
-                "reqDVT": values.dvt,
-                "reqNgayLapPhieu": ngaylapphieu,
+                "reqMaKH": values.makh,
+                "reqHinhThucTT": values.hinhthuctt,
+                "reqNgayLap": ngaylap,
+
             }
 
-            const res = await ServiceDeliveryReceipt.createDeliveryReceipt(body)
-            if (res.message == "Phiếu nhập đã tồn tại") {
-                message.warning("Mã phiếu nhập đã tồn tại!")
-            } else if (res.message == "Đồng bộ thêm phiếu nhập thành công") {
+            const res = await ServiceOrder.createOrder(body)
+            if (res.message == "hóa đơn đã tồn tại") {
+                message.warning("Mã hóa đơn đã tồn tại!")
+            } else if (res.message == "Đồng bộ thêm hóa đơn thành công") {
                 message.success("Thêm dữ liệu thành công và đồng bộ dữ liệu thành công!")
                 setTimeout(() => {
                     window.location.reload(false);
@@ -84,18 +90,35 @@ const FormDrawerDeliveryReceipt = ({ open, setOpen, title, id, setId }) => {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="maphieunhap"
-                            label="Mã phiếu nhập"
+                            name="mahoadon"
+                            label="Mã hóa đơn"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Hãy nhập mã phiếu nhập',
+                                    message: 'Hãy nhập mã hóa đơn',
                                 },
                             ]}
                         >
-                            <Input disabled={id ? true : false} placeholder="Nhập mã phiếu nhập" />
+                            <Input disabled={id ? true : false} placeholder="Nhập mã hóa đơn" />
                         </Form.Item>
                     </Col>
+
+                    <Col span={12}>
+                        <Form.Item
+                            name="hinhthuctt"
+                            label="Hình thức thành toán"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Hãy nhập hình thức thanh toán',
+                                },
+                            ]}
+                        >
+                            <Input placeholder="Nhập hình thức thanh toán" />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
                             name="manv"
@@ -114,62 +137,45 @@ const FormDrawerDeliveryReceipt = ({ open, setOpen, title, id, setId }) => {
                             </Select>
                         </Form.Item>
                     </Col>
-                </Row>
-                <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="makho"
-                            label="Kho"
+                            name="makh"
+                            label="Khách hàng"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Hãy chọn kho',
+                                    message: 'Hãy chọn khách hàng',
                                 },
                             ]}
                         >
-                            <Select placeholder="Chọn kho">
-                                {Warehouse?.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaKho}>{item.TenKho}</Option>
+                            <Select placeholder="Chọn khách hàng">
+                                {Customer?.map((item, i) => (
+                                    <Option key={i + 1} value={item.MaKH}>{item.TenKH}</Option>
                                 ))}
                             </Select>
                         </Form.Item>
                     </Col>
 
-                    <Col span={12}>
-                        <Form.Item
-                            name="dvt"
-                            label="Đơn vị tính"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Hãy nhập đơn vị tính',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Nhập đơn vị tính" />
-                        </Form.Item>
-                    </Col>
+
 
                 </Row>
                 <Row gutter={16}>
-                    <Col span={12}>
+                    <Col span={24}>
                         <Form.Item
-                            name="ngaylapphieu"
-                            label="Ngày lập phếu"
+                            name="ngaylap"
+                            label="Ngày lập"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Hãy chọn ngày lập phiếu',
+                                    message: 'Hãy chọn ngày lập',
                                 },
                             ]}
                         >
                             <DatePicker
-                                style={{
-                                    width: "100%"
-                                }}
-
-                                format="DD-MM-YYYY"
-                                placeholder="Nhập ngày lập phiếu" />
+                                style={{ width: "100%" }}
+                                format="DD-MM-YYYY HH:mm"
+                                showTime
+                                placeholder="Chọn ngày lập " />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -190,4 +196,4 @@ const FormDrawerDeliveryReceipt = ({ open, setOpen, title, id, setId }) => {
     );
 }
 
-export default FormDrawerDeliveryReceipt;
+export default FormDrawerOrder;

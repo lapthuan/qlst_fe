@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Divider, Space } from 'antd';
+import { Breadcrumb, Button, Divider, message, Space } from 'antd';
 import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -7,10 +7,12 @@ import FormDrawerCustomer from '../component/form/FormDrawerCustomer';
 import ServiceCustomer from '../service/ServiceCustomer';
 import useAsync from '../hook/useAsync';
 import dayjs from 'dayjs';
+import ModalDelete from '../component/modal/modalDelete';
 
 const Customer = () => {
     const [open, setOpen] = useState(false);
     const [id, setId] = useState();
+    const [openModal, setOpenModal] = useState(false);
     const { data: customer } = useAsync(() => ServiceCustomer.getAllCustomer())
     const columns = [
         {
@@ -51,10 +53,12 @@ const Customer = () => {
         {
             title: 'Công cụ',
             key: 'congcu',
-            render: (_, record) => (
+            dataIndex: 'makh',
+            render: (id) => (
                 <Space size="middle">
-                    <Button type="dashed" >Sửa</Button>
-                    <Button type="primary" danger>Xóa</Button>
+                    <Button type="dashed" onClick={() => handleEditClick(id)}>Sửa</Button>
+                    <Button type="primary" danger onClick={() => handleDeleteClick(id)}>Xóa</Button>
+
                 </Space >
             ),
         },
@@ -62,6 +66,8 @@ const Customer = () => {
 
     const handleDeleteClick = (id) => {
         setId(id)
+        setOpenModal(true)
+
     };
     const handleEditClick = (id) => {
         setId(id)
@@ -88,9 +94,23 @@ const Customer = () => {
         );
     }
     )
+    const submitModalDelete = async () => {
+        const res = await ServiceCustomer.deleteCustomer(id)
+
+        if (res.message) {
+            message.success("Xóa dữ liệu thành công")
+            setOpenModal(false)
+            setTimeout(() => {
+                window.location.reload(false);
+            }, 2000);
+        }
+    }
+
+
     return (
         <>
-            <FormDrawerCustomer open={open} setOpen={setOpen} title={"Thêm khách hàng"} />
+            <ModalDelete openModal={openModal} setOpenModal={setOpenModal} submitModal={submitModalDelete} />
+            <FormDrawerCustomer open={open} setOpen={setOpen} title={" khách hàng"} id={id} setId={setId} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',

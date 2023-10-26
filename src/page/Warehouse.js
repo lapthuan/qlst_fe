@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Divider, Space } from 'antd';
+import { Breadcrumb, Button, Divider, message, Space } from 'antd';
 import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -6,9 +6,11 @@ import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
 import FormDrawerWarehouse from '../component/form/FormDrawerWarehouse';
 import ServiceWarehouse from '../service/ServiceWarehouse';
 import useAsync from '../hook/useAsync';
+import ModalDelete from '../component/modal/modalDelete';
 
 const Warehouse = () => {
     const [open, setOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
     const [id, setId] = useState();
     const { data: warehouse } = useAsync(() => ServiceWarehouse.getAllWarehouse())
     const columns = [
@@ -35,10 +37,13 @@ const Warehouse = () => {
         {
             title: 'Công cụ',
             key: 'congcu',
-            render: (_, record) => (
+            dataIndex: 'makho',
+
+            render: (id) => (
                 <Space size="middle">
-                    <Button type="dashed" >Sửa</Button>
-                    <Button type="primary" danger>Xóa</Button>
+                    <Button type="dashed" onClick={() => handleEditClick(id)}>Sửa</Button>
+                    <Button type="primary" danger onClick={() => handleDeleteClick(id)}>Xóa</Button>
+
                 </Space >
             ),
         },
@@ -46,6 +51,8 @@ const Warehouse = () => {
 
     const handleDeleteClick = (id) => {
         setId(id)
+        setOpenModal(true)
+
     };
     const handleEditClick = (id) => {
         setId(id)
@@ -53,7 +60,7 @@ const Warehouse = () => {
     };
 
     let data = []
-  
+
     warehouse?.map((Item, i) => {
         data.push({
             key: i + 1,
@@ -61,13 +68,29 @@ const Warehouse = () => {
             chinhanh: Item.TenCN,
             tenkho: Item.TenKho,
             diachi: Item.DiaChi,
-           
+
         })
 
     })
+    const submitModalDelete = async () => {
+        const res = await ServiceWarehouse.deleteWarehouse(id)
+
+        if (res.message == "Lỗi khi xóa kho ở SQL Server") {
+            message.success("Dữ liệu này là khóa chính cần xóa các bảng phụ thuộc trước !")
+            setOpenModal(false)
+        } else if (res.message) {
+            message.success("Xóa dữ liệu thành công")
+            setOpenModal(false)
+            setTimeout(() => {
+                window.location.reload(false);
+            }, 2000);
+        }
+
+    }
     return (
         <>
-            <FormDrawerWarehouse open={open} setOpen={setOpen} title={"Thêm kho"} />
+            <ModalDelete openModal={openModal} setOpenModal={setOpenModal} submitModal={submitModalDelete} />
+            <FormDrawerWarehouse open={open} setOpen={setOpen} title={" kho"} id={id} setId={setId} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',

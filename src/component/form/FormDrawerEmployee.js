@@ -1,12 +1,106 @@
 
 import CustomDrawer from "../drawer/CustomDrawer";
-import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from "antd";
+import { Button, Col, DatePicker, Form, Input, message, Row, Select, Space } from "antd";
+import useAsync from "../../hook/useAsync";
+import ServiceDesignation from "../../service/ServiceDesignation";
+import ServiceBranch from "../../service/ServiceBranch";
+import ServiceCustomer from "../../service/ServiceCustomer";
+import dayjs from "dayjs";
+import ServiceEmployee from "../../service/ServiceEmployee";
+import { useEffect } from "react";
 const { Option } = Select;
 
-const FormDrawerEmployee = ({ open, setOpen, title }) => {
+const FormDrawerEmployee = ({ open, setOpen, title, id, setId }) => {
+    const [form] = Form.useForm();
+    const { data: designation } = useAsync(() => ServiceDesignation.getAllDesignation())
+    const { data: branch } = useAsync(() => ServiceBranch.getAllBranch())
+    useEffect(() => {
+
+        if (id) {
+            (async () => {
+                const res = await ServiceEmployee.getAEmployee(id)
+
+                if (res) {
+
+                    const ngaysinhfm = dayjs(res[0].NgaySinh, 'YYYY-MM-DD');
+
+                    form.setFieldsValue({
+
+                        manv: res[0].MaNV,
+                        machinhanh: res[0].MaCN,
+                        macv: res[0].MaCV,
+                        tennv: res[0].TenNV,
+                        gioitinh: res[0].GioiTinh,
+                        diachi: res[0].Diachi,
+                        sdt: res[0].Sdt,
+                        ngaysinh: ngaysinhfm
+                    });
+
+                }
+            })();
+        } else {
+            form.resetFields()
+        }
+    }, [id])
+    const onFinish = async (values) => {
+        if (id) {
+            const ngaysinh = dayjs(values.ngaysinh).format('YYYY-MM-DD HH:mm:ss')
+            const body = {
+
+                "reqMaCN": values.machinhanh,
+                "reqMaCV": values.macv,
+                "reqTenNV": values.tennv,
+                "reqNgaySinh": ngaysinh,
+                "reqGioiTinh": values.gioitinh,
+                "reqDiachi": values.diachi,
+                "reqSdt": values.sdt,
+
+
+            }
+
+            const res = await ServiceEmployee.editEmployee(body, id)
+
+            if (res.message) {
+                message.success("Sửa dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 2000);
+            }
+          
+        } else {
+            const ngaysinh = dayjs(values.ngaysinh).format('YYYY-MM-DD HH:mm:ss')
+
+            const body = {
+                "reqMaNV": values.manv,
+                "reqMaCN": values.machinhanh,
+                "reqMaCV": values.macv,
+                "reqTenNV": values.tennv,
+                "reqNgaySinh": ngaysinh,
+                "reqGioiTinh": values.gioitinh,
+                "reqDiachi": values.diachi,
+                "reqSdt": values.sdt,
+
+
+            }
+
+            const res = await ServiceEmployee.createEmployee(body)
+          
+            if (res.message == "Lỗi khi thêm nhân viên vào SQL Server") {
+                message.warning("Mã nhân viên đã tồn tại!")
+            } else if (res.message == "Đồng bộ thêm nhân viên thành công!") {
+                message.success("Thêm dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 2000);
+            }
+
+        }
+
+
+    };
     return (
-        <CustomDrawer open={open} setOpen={setOpen} title={title} >
-            <Form layout="vertical" hideRequiredMark>
+        <CustomDrawer open={open} setOpen={setOpen} title={(id ? "Sửa " : "Thêm ") + title} setId={setId}>
+            <Form layout="vertical" form={form} onFinish={onFinish} hideRequiredMark>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
@@ -19,7 +113,7 @@ const FormDrawerEmployee = ({ open, setOpen, title }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="Nhập mã nhân viên" />
+                            <Input disabled={id ? true : false} placeholder="Nhập mã nhân viên" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -52,6 +146,7 @@ const FormDrawerEmployee = ({ open, setOpen, title }) => {
                         >
                             <DatePicker
                                 style={{ width: "100%" }}
+                                format="DD-MM-YYYY"
                                 placeholder="Chọn ngày sinh" />
                         </Form.Item>
                     </Col>
@@ -68,7 +163,7 @@ const FormDrawerEmployee = ({ open, setOpen, title }) => {
                         >
                             <Select placeholder="Chọn giới tính">
                                 <Option value="Nam">Nam</Option>
-                                <Option value="Nữ">Nữ</Option>
+                                <Option value="Nu">Nữ</Option>
                             </Select>
                         </Form.Item>
                     </Col>
@@ -116,8 +211,11 @@ const FormDrawerEmployee = ({ open, setOpen, title }) => {
                             ]}
                         >
                             <Select placeholder="Chọn chi nhánh">
-                                <Option value="xiao">Xiaoxiao Fu</Option>
-                                <Option value="mao">Maomao Zhou</Option>
+                                {branch.map((item, i) => (
+                                    <Option key={i + 1} value={item.MaCN}>{item.TenCN}</Option>
+                                ))}
+
+
                             </Select>
                         </Form.Item>
                     </Col>
@@ -133,8 +231,9 @@ const FormDrawerEmployee = ({ open, setOpen, title }) => {
                             ]}
                         >
                             <Select placeholder="Chọn chức vụ">
-                                <Option value="xiao">Xiaoxiao Fu</Option>
-                                <Option value="mao">Maomao Zhou</Option>
+                                {designation.map((item, i) => (
+                                    <Option key={i + 1} value={item.MaCV}>{item.TenCV}</Option>
+                                ))}
                             </Select>
                         </Form.Item>
                     </Col>
@@ -147,7 +246,7 @@ const FormDrawerEmployee = ({ open, setOpen, title }) => {
                     <Space align="end">
                         <Button onClick={() => setOpen(!open)}>Hủy</Button>
                         <Button type="primary" htmlType="submit">
-                            Thêm
+                            {id ? "Sửa" : " Thêm"}
                         </Button>
                     </Space>
                 </Form.Item>

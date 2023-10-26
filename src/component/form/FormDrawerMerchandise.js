@@ -1,13 +1,19 @@
 
 import CustomDrawer from "../drawer/CustomDrawer";
-import { Button, Col, Form, Input, Row, Select, Space } from "antd";
+import { Button, Col, Form, Input, message, Row, Select, Space } from "antd";
 import useAsync from "../../hook/useAsync";
 import ServicesMerchandise from "../../service/ServiceMerchandise";
 import { useEffect, useState } from "react";
+import ServiceTypeOfMerchandise from "../../service/ServiceTypeOfMerchandise";
+import ServiceManufacturer from "../../service/ServiceManufacturer";
+import ServiceCoupon from "../../service/ServiceCoupon";
 const { Option } = Select;
 
 const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
     const [form] = Form.useForm();
+    const { data: typeOfMerchandise } = useAsync(() => ServiceTypeOfMerchandise.getAllTypeOfMerchandise())
+    const { data: Manufacturer } = useAsync(() => ServiceManufacturer.getAllManufacturer())
+    const { data: Coupon } = useAsync(() => ServiceCoupon.getAllCoupon())
 
     useEffect(() => {
         if (id) {
@@ -30,15 +36,63 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
             form.resetFields()
         }
     }, [id])
+    const onFinish = async (values) => {
+        if (id) {
+            const body = {
+                "reqMaMH": values.mamh,
+                "reqMaLH": values.malh,
+                "reqMaNSX": values.mansx,
+                "reqMaGiamGia": values.magiamgia,
+                "reqTenMH": values.tenmh,
+                "reqGiamGia": values.giamgia,
+                "reqMoTa": values.mota,
+                "reqDVT": values.dvt,
+            }
 
+            const res = await ServicesMerchandise.editMerchandise(body, id)
+
+            if (res.message) {
+                message.success("Sửa dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 2000);
+            }
+
+        } else {
+            const body = {
+                "reqMaMH": values.mamh,
+                "reqMaLH": values.malh,
+                "reqMaNSX": values.mansx,
+                "reqMaGiamGia": values.magiamgia,
+                "reqTenMH": values.tenmh,
+                "reqGiamGia": values.giamgia,
+                "reqMoTa": values.mota,
+                "reqDVT": values.dvt,
+            }
+
+            const res = await ServicesMerchandise.createMerchandise(body)
+            
+            if (res.message == "mặt hàng đã tồn tại") {
+                message.warning("Mã mặt hàng đã tồn tại!")
+            } else if (res.message == "Đồng bộ thêm mặt hàng thành công") {
+                message.success("Thêm dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 2000);
+            }
+        }
+
+
+    };
     return (
         <CustomDrawer open={open} setOpen={setOpen} title={(id ? "Sửa " : "Thêm ") + title} setId={setId} >
-            <Form form={form} layout="vertical" hideRequiredMark>
+            <Form layout="vertical" form={form} onFinish={onFinish} hideRequiredMark>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
                             name="mamh"
                             label="Mã mặt hàng"
+
                             rules={[
                                 {
                                     required: true,
@@ -46,7 +100,7 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="Nhập mã mặt hàng" />
+                            <Input disabled={id ? true : false} placeholder="Nhập mã mặt hàng" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -65,7 +119,7 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
                     </Col>
                 </Row>
                 <Row gutter={16}>
-                    <Col span={8}>
+                    <Col span={12}>
                         <Form.Item
                             name="malh"
                             label="Loại hàng"
@@ -77,12 +131,39 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn loại hàng">
-                                <Option value="xiao">Xiaoxiao Fu</Option>
-                                <Option value="mao">Maomao Zhou</Option>
+                                {typeOfMerchandise?.map((item, i) => (
+                                    <Option key={i + 1} value={item.MaLH}>{item.TenLH}</Option>
+
+                                ))}
+
                             </Select>
                         </Form.Item>
                     </Col>
-                    <Col span={8}>
+
+                    <Col span={12}>
+                        <Form.Item
+                            name="magiamgia"
+                            label="Mã giảm giá"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Hãy chọn mã giảm giá',
+                                },
+                            ]}
+                        >
+                            <Select placeholder="Chọn mã giảm giá">
+                                {Coupon?.map((item, i) => (
+                                    <Option key={i + 1} value={item.MaGiamGia}>{item.TenMaGG}</Option>
+
+                                ))}
+
+                            </Select>
+                        </Form.Item>
+                    </Col>
+
+                </Row>
+                <Row gutter={16}>
+                    <Col span={24}>
                         <Form.Item
                             name="mansx"
                             label="Nhà sản xuất"
@@ -94,26 +175,13 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn nhà sản xuất">
-                                <Option value="xiao">Xiaoxiao Fu</Option>
-                                <Option value="mao">Maomao Zhou</Option>
+                                {Manufacturer?.map((item, i) => (
+                                    <Option key={i + 1} value={item.MaNsx}>{item.TenNsx}</Option>
+
+                                ))}
                             </Select>
                         </Form.Item>
                     </Col>
-                    <Col span={8}>
-                        <Form.Item
-                            name="magiamgia"
-                            label="Mã giảm giá"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Hãy chọn mã giảm giá',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Nhập tên mặt hàng" />
-                        </Form.Item>
-                    </Col>
-
                 </Row>
                 <Row gutter={16}>
                     <Col span={12}>
@@ -141,7 +209,7 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
                                 },
                             ]}
                         >
-                            <Input placeholder="Nhập giá mặt hàng" />
+                            <Input type="number" placeholder="Nhập giá mặt hàng" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -167,7 +235,7 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
                     <Space align="end">
                         <Button onClick={() => setOpen(!open)}>Hủy</Button>
                         <Button type="primary" htmlType="submit">
-                            Thêm
+                            {id ? "Sửa" : " Thêm"}
                         </Button>
                     </Space>
                 </Form.Item>

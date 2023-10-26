@@ -8,14 +8,18 @@ import useAsync from '../hook/useAsync';
 import ServiceDeliveryReceipt from '../service/ServiceDeliveryReceipt';
 import dayjs from 'dayjs';
 import ModalDelete from '../component/modal/modalDelete';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import FormDrawerDeliveryReceiptDetail from '../component/form/FormDrawerDeliveryReceiptDetail';
 
 
-const DeliveryReceipt = () => {
+const DeliveryReceiptDetail = () => {
     const [open, setOpen] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [id, setId] = useState();
-    const { data: deliveryReceipt } = useAsync(() => ServiceDeliveryReceipt.getAllDeliveryReceipt())
+    const [idMaMH, setIdMaMH] = useState();
+    const { iddr } = useParams();
+
+    const { data: DeliveryReceiptDetail } = useAsync(() => ServiceDeliveryReceipt.getDeliveryReceiptDetail(iddr))
     const columns = [
         {
             title: 'Mã phiếu nhập',
@@ -23,52 +27,47 @@ const DeliveryReceipt = () => {
             key: 'maphieunhap',
         },
         {
-            title: 'Nhân viên',
-            dataIndex: 'nhanvien',
-            key: 'nhanvien',
+            title: 'Mặt hàng',
+            dataIndex: 'mamh',
+            key: 'mamh',
         },
         {
-            title: 'Kho',
-            dataIndex: 'kho',
-            key: 'kho',
+            title: 'Giá nhập',
+            dataIndex: 'gianhap',
+            key: 'gianhap',
         },
         {
-            title: 'ĐVT',
-            dataIndex: 'dvt',
-            key: 'dvt',
+            title: 'Giá bán',
+            dataIndex: 'giaban',
+            key: 'giaban',
         },
         {
-            title: 'Ngày lập phiếu',
-            dataIndex: 'ngaylapphieu',
-            key: 'ngaylapphieu',
+            title: 'Số lượng',
+            dataIndex: 'soluong',
+            key: 'soluong',
         },
         {
-            title: 'Chi tiết',
-            dataIndex: 'maphieunhap',
-            render: (id) => (
-                <Space size="middle">
-                    <Link to={`/phieunhap/${id}`}>
-                        <Button type="primary">Xem</Button>
-
-                    </Link>
-                </Space >
-            ),
+            title: 'Thành tiền',
+            dataIndex: 'thanhtien',
+            key: 'thanhtien',
         },
         {
             title: 'Công cụ',
-            dataIndex: 'maphieunhap',
+
             key: 'congcu',
-            render: (id) => (
+            render: (record) => (
                 <Space size="middle">
-                    <Button type="dashed" onClick={() => handleEditClick(id)}>Sửa</Button>
-                    <Button type="primary" danger onClick={() => handleDeleteClick(id)}>Xóa</Button>
+                    <Button type="dashed" onClick={() => handleEditClick(record.maphieunhap)}>Sửa</Button>
+                    <Button type="primary" danger onClick={() => handleDeleteClick(record.maphieunhap, record.mamh)}>Xóa</Button>
+
                 </Space >
             ),
         },
     ];
 
-    const handleDeleteClick = (id) => {
-        setId(id)
+    const handleDeleteClick = (maphieunhap, mamh) => {
+        setId(maphieunhap)
+        setIdMaMH(mamh)
         setOpenModal(true)
     };
     const handleEditClick = (id) => {
@@ -77,21 +76,29 @@ const DeliveryReceipt = () => {
     };
 
     let data = []
+    if (DeliveryReceiptDetail.message) {
 
-    deliveryReceipt?.map((Item, i) => {
-        const ngaylapphieu = dayjs(Item.NgayLapPhieu).format('DD/MM/YYYY HH:mm');
-        data.push({
-            key: i + 1,
-            maphieunhap: Item.MaPhieuNhap,
-            nhanvien: Item.TenNV,
-            kho: Item.TenKho,
-            dvt: Item.DVT,
-            ngaylapphieu: ngaylapphieu,
+    } else {
+        DeliveryReceiptDetail?.map((Item, i) => {
+            data.push({
+                key: i + 1,
+                maphieunhap: Item.MaPhieuNhap,
+                mamh: Item.MaMH,
+                gianhap: Item.GiaNhap,
+                giaban: Item.GiaBan,
+                soluong: Item.SoLuong,
+                thanhtien: Item.ThanhTien,
+            })
+
         })
+    }
 
-    })
     const submitModalDelete = async () => {
-        const res = await ServiceDeliveryReceipt.deleteDeliveryReceipt(id)
+        const body = {
+            "id": id,
+            "reqMaMH": idMaMH
+        }
+        const res = await ServiceDeliveryReceipt.deleteDeliveryReceiptDetail(body)
 
         if (res.message) {
             message.success("Xóa dữ liệu thành công")
@@ -104,15 +111,18 @@ const DeliveryReceipt = () => {
     }
     return (
         <>
+
             <ModalDelete openModal={openModal} setOpenModal={setOpenModal} submitModal={submitModalDelete} />
-            <FormDrawerDeliveryReceipt open={open} setOpen={setOpen} title={" phiếu nhập"} id={id} setId={setId} />
+            <FormDrawerDeliveryReceiptDetail open={open} setOpen={setOpen} title={" phiếu nhập"} id={id} setId={setId} iddr={iddr} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
                 }}
             >
                 <Breadcrumb.Item>Chức năng</Breadcrumb.Item>
-                <Breadcrumb.Item>Phiếu nhập</Breadcrumb.Item>
+                <Breadcrumb.Item><Link to={"/phieunhap"}>Phiếu nhập</Link></Breadcrumb.Item>
+
+                <Breadcrumb.Item>{iddr}</Breadcrumb.Item>
 
             </Breadcrumb>
             <div className='page-container'>
@@ -136,4 +146,4 @@ const DeliveryReceipt = () => {
     );
 }
 
-export default DeliveryReceipt;
+export default DeliveryReceiptDetail;

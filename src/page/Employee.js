@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Divider, Space } from 'antd';
+import { Breadcrumb, Button, Divider, message, Space } from 'antd';
 import { useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -7,6 +7,7 @@ import FormDrawerEmployee from '../component/form/FormDrawerEmployee';
 import ServiceEmployee from '../service/ServiceEmployee';
 import useAsync from '../hook/useAsync';
 import dayjs from 'dayjs';
+import ModalDelete from '../component/modal/modalDelete';
 
 
 
@@ -14,6 +15,8 @@ const Employee = () => {
     const [open, setOpen] = useState(false);
     const [id, setId] = useState();
     const { data: employee } = useAsync(() => ServiceEmployee.getAllEmployee())
+    const [openModal, setOpenModal] = useState(false);
+
     const columns = [
         {
             title: 'Mã NV',
@@ -57,11 +60,13 @@ const Employee = () => {
         },
         {
             title: 'Công cụ',
+            dataIndex: 'manv',
             key: 'congcu',
-            render: (_, record) => (
+            render: (id) => (
                 <Space size="middle">
-                    <Button type="dashed" >Sửa</Button>
-                    <Button type="primary" danger>Xóa</Button>
+                    <Button type="dashed" onClick={() => handleEditClick(id)}>Sửa</Button>
+                    <Button type="primary" danger onClick={() => handleDeleteClick(id)}>Xóa</Button>
+
                 </Space >
             ),
         },
@@ -69,6 +74,7 @@ const Employee = () => {
 
     const handleDeleteClick = (id) => {
         setId(id)
+        setOpenModal(true)
     };
     const handleEditClick = (id) => {
         setId(id)
@@ -78,7 +84,7 @@ const Employee = () => {
     let data = []
     employee?.map((Item, i) => {
 
-        const ngaysinhFormatted = dayjs(Item.NgaySinh).format('DD/MM/YYYY HH:mm');
+        const ngaysinhFormatted = dayjs(Item.NgaySinh).format('DD/MM/YYYY');
         data.push(
             {
                 key: i + 1,
@@ -94,10 +100,26 @@ const Employee = () => {
         );
     }
     )
+    const submitModalDelete = async () => {
+        const res = await ServiceEmployee.deleteEmployee(id)
+
+        if (res.message == "Lỗi khi xóa nhân viên ở SQL Server") {
+            message.success("Dữ liệu này là khóa chính cần xóa các bảng phụ thuộc trước !")
+            setOpenModal(false)
+        } else if (res.message) {
+            message.success("Xóa dữ liệu thành công")
+            setOpenModal(false)
+            setTimeout(() => {
+                window.location.reload(false);
+            }, 2000);
+        }
+
+    }
 
     return (
         <>
-            <FormDrawerEmployee open={open} setOpen={setOpen} title={"Thêm nhân viên"} />
+            <ModalDelete openModal={openModal} setOpenModal={setOpenModal} submitModal={submitModalDelete} />
+            <FormDrawerEmployee open={open} setOpen={setOpen} title={" nhân viên"} id={id} setId={setId} />
             <Breadcrumb
                 style={{
                     margin: '16px 0',
