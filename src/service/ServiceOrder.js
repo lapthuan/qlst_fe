@@ -22,11 +22,14 @@ const ServiceOrder = {
     getAOrderDetail: async (id) => {
         return requests.get(`/chitiethoadon/${id}`);
     },
+    getAOrderDetails: async (mamh, mahd) => {
+        return requests.get(`/chitiethoadon/detail?mamh=${mamh}&mahd=${mahd}`);
+    },
     createOrderDetail: async (body) => {
         return requests.post(`/chitiethoadon`, body);
     },
-    editOrderDetail: async (body, id) => {
-        return requests.put(`/chitiethoadon/${id}`, body);
+    editOrderDetail: async (body) => {
+        return requests.put(`/chitiethoadon/`, body);
     },
     deleteOrderDetail: async (body) => {
         return requests.post(`/chitiethoadon/deletedetail`, body);

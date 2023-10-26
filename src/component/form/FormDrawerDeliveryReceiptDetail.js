@@ -10,14 +10,14 @@ import dayjs from "dayjs";
 import ServicesMerchandise from "../../service/ServiceMerchandise";
 const { Option } = Select;
 
-const FormDrawerDeliveryReceiptDetail = ({ open, setOpen, title, id, setId, iddr }) => {
+const FormDrawerDeliveryReceiptDetail = ({ open, setOpen, title, id, setId, iddr, idMaMH }) => {
     const [form] = Form.useForm();
     const { data: Merchandise } = useAsync(() => ServicesMerchandise.getAllMerchandise())
 
     useEffect(() => {
         if (id) {
             (async () => {
-                const res = await ServiceDeliveryReceipt.getDeliveryReceiptDetail(id)
+                const res = await ServiceDeliveryReceipt.getDeliveryReceiptDetails(id, idMaMH)
                 if (res) {
 
                     form.setFieldsValue({
@@ -39,6 +39,8 @@ const FormDrawerDeliveryReceiptDetail = ({ open, setOpen, title, id, setId, iddr
 
 
             const body = {
+                "id": iddr,
+                "idmamh": idMaMH,
                 "reqMaMH": values.mamh,
                 "reqGiaNhap": values.gianhap,
                 "reqGiaBan": values.giaban,
@@ -46,14 +48,16 @@ const FormDrawerDeliveryReceiptDetail = ({ open, setOpen, title, id, setId, iddr
                 "reqThanhTien": thanhtien,
             }
 
-            const res = await ServiceDeliveryReceipt.editDeliveryReceiptDetail(body, id)
-
-            if (res.message) {
-                message.success("Sửa dữ liệu thành công và đồng bộ dữ liệu thành công!")
-                setTimeout(() => {
-                    window.location.reload(false);
-                }, 2000);
-            }
+            const res = await ServiceDeliveryReceipt.editDeliveryReceiptDetail(body)
+            if (res.message === "Trùng chi tiết phiếu nhập") {
+                message.success("Sản phẩm trong phiếu đã tồn tại!")
+            } else
+                if (res.message) {
+                    message.success("Sửa dữ liệu thành công và đồng bộ dữ liệu thành công!")
+                    setTimeout(() => {
+                        window.location.reload(false);
+                    }, 2000);
+                }
 
         } else {
             const thanhtien = values.gianhap * values.soluong

@@ -12,7 +12,7 @@ import ServiceOrder from "../../service/ServiceOrder";
 import ServicesMerchandise from "../../service/ServiceMerchandise";
 const { Option } = Select;
 
-const FormDrawerOrderDetail = ({ open, setOpen, title, id, setId, idhd }) => {
+const FormDrawerOrderDetail = ({ open, setOpen, title, id, setId, idhd, idMaMH }) => {
     const [form] = Form.useForm();
 
     const { data: Merchandise } = useAsync(() => ServicesMerchandise.getAllMerchandise())
@@ -20,7 +20,7 @@ const FormDrawerOrderDetail = ({ open, setOpen, title, id, setId, idhd }) => {
     useEffect(() => {
         if (id) {
             (async () => {
-                const res = await ServiceOrder.getAOrderDetail(id)
+                const res = await ServiceOrder.getAOrderDetails(idMaMH, id)
                 if (res) {
 
 
@@ -43,15 +43,17 @@ const FormDrawerOrderDetail = ({ open, setOpen, title, id, setId, idhd }) => {
             const thanhtien = values.dongia * values.soluong
 
             const body = {
+                "id": idhd,
+                "idmamh": idMaMH,
                 "reqMaMH": values.mamh,
                 "reqSoLuong": values.soluong,
                 "reqDonGia": values.dongia,
                 "reqThanhTien": thanhtien
-
             }
-            const res = await ServiceOrder.editOrderDetail(body, idhd)
-
-            if (res.message) {
+            const res = await ServiceOrder.editOrderDetail(body)
+            if (res.message === "Trùng chi tiết hóa đơn") {
+                message.success("Sản phẩm trong hóa đơn đã tồn tại!")
+            } else if (res.message) {
                 message.success("Sửa dữ liệu thành công và đồng bộ dữ liệu thành công!")
                 setTimeout(() => {
                     window.location.reload(false);

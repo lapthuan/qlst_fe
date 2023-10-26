@@ -57,7 +57,7 @@ const DeliveryReceiptDetail = () => {
             key: 'congcu',
             render: (record) => (
                 <Space size="middle">
-                    <Button type="dashed" onClick={() => handleEditClick(record.maphieunhap)}>Sửa</Button>
+                    <Button type="dashed" onClick={() => handleEditClick(record.maphieunhap, record.mamh)}>Sửa</Button>
                     <Button type="primary" danger onClick={() => handleDeleteClick(record.maphieunhap, record.mamh)}>Xóa</Button>
 
                 </Space >
@@ -70,8 +70,9 @@ const DeliveryReceiptDetail = () => {
         setIdMaMH(mamh)
         setOpenModal(true)
     };
-    const handleEditClick = (id) => {
-        setId(id)
+    const handleEditClick = (maphieunhap, mamh) => {
+        setId(maphieunhap)
+        setIdMaMH(mamh)
         setOpen(true)
     };
 
@@ -113,7 +114,7 @@ const DeliveryReceiptDetail = () => {
         <>
 
             <ModalDelete openModal={openModal} setOpenModal={setOpenModal} submitModal={submitModalDelete} />
-            <FormDrawerDeliveryReceiptDetail open={open} setOpen={setOpen} title={" phiếu nhập"} id={id} setId={setId} iddr={iddr} />
+            <FormDrawerDeliveryReceiptDetail open={open} setOpen={setOpen} title={" phiếu nhập"} id={id} setId={setId} iddr={iddr} idMaMH={idMaMH}/>
             <Breadcrumb
                 style={{
                     margin: '16px 0',

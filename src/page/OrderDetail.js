@@ -53,7 +53,7 @@ const OrderDetail = () => {
 
             render: (record) => (
                 <Space size="middle">
-                    <Button type="dashed" onClick={() => handleEditClick(record.mahd)}>Sửa</Button>
+                    <Button type="dashed" onClick={() => handleEditClick(record.mahd, record.mamh)}>Sửa</Button>
                     <Button type="primary" danger onClick={() => handleDeleteClick(record.mahd, record.mamh)}>Xóa</Button>
 
                 </Space >
@@ -66,8 +66,9 @@ const OrderDetail = () => {
         setIdMaMH(mamh)
         setOpenModal(true)
     };
-    const handleEditClick = (id) => {
-        setId(id)
+    const handleEditClick = (mahd, mamh) => {
+        setId(mahd)
+        setIdMaMH(mamh)
         setOpen(true)
     };
 
@@ -110,7 +111,7 @@ const OrderDetail = () => {
         <>
             <ModalDelete openModal={openModal} setOpenModal={setOpenModal} submitModal={submitModalDelete} />
 
-            <FormDrawerOrderDetail open={open} setOpen={setOpen} title={" hóa đơn"} id={id} setId={setId} idhd={idhd} />
+            <FormDrawerOrderDetail open={open} setOpen={setOpen} title={" hóa đơn"} id={id} setId={setId} idhd={idhd} idMaMH={idMaMH} />
 
             <Breadcrumb
                 style={{
