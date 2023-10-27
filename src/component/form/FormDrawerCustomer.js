@@ -71,7 +71,7 @@ const FormDrawerCustomer = ({ open, setOpen, title, id, setId }) => {
             }
 
             const res = await ServiceCustomer.createCustomer(body)
-           
+
             if (res.message == "Khách hàng đã tồn tại!") {
                 message.warning("Mã khách hàng đã tồn tại!")
             } else if (res.message == "Đồng bộ thêm khách hàng thành công") {
@@ -131,9 +131,11 @@ const FormDrawerCustomer = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn chi nhánh">
-                                {branch.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaCN}>{item.TenCN}</Option>
-                                ))}
+                                {
+                                    Array.isArray(branch) &&
+                                    branch.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaCN}>{item.TenCN}</Option>
+                                    ))}
                             </Select>
                         </Form.Item>
                     </Col>

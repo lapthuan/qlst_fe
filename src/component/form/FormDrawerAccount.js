@@ -61,7 +61,7 @@ const FormDrawerAccount = ({ open, setOpen, title, id, setId }) => {
             }
 
             const res = await ServiceAccount.createAccount(body)
-         
+
             if (res.message == "Tài khoản đã tồn tại") {
                 message.warning("Tài khoản đã tồn tại")
             } else if (res.message == "Đồng bộ thêm tài khoản thành công") {
@@ -122,11 +122,11 @@ const FormDrawerAccount = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn nhân viên">
-                                {Employee?.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaNV}>{item.TenNV}</Option>
-                                ))}
-
-
+                                {
+                                    Array.isArray(Employee) &&
+                                    Employee?.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaNV}>{item.TenNV}</Option>
+                                    ))}
                             </Select>
                         </Form.Item>
                     </Col>

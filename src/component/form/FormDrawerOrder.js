@@ -131,9 +131,12 @@ const FormDrawerOrder = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn nhân viên">
-                                {Employee?.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaNV}>{item.TenNV}</Option>
-                                ))}
+
+                                {
+                                    Array.isArray(Employee) &&
+                                    Employee?.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaNV}>{item.TenNV}</Option>
+                                    ))}
                             </Select>
                         </Form.Item>
                     </Col>
@@ -149,9 +152,11 @@ const FormDrawerOrder = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn khách hàng">
-                                {Customer?.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaKH}>{item.TenKH}</Option>
-                                ))}
+                                {
+                                    Array.isArray(Employee) &&
+                                    Customer?.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaKH}>{item.TenKH}</Option>
+                                    ))}
                             </Select>
                         </Form.Item>
                     </Col>

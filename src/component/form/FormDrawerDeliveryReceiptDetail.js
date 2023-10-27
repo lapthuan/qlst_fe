@@ -101,9 +101,11 @@ const FormDrawerDeliveryReceiptDetail = ({ open, setOpen, title, id, setId, iddr
                             ]}
                         >
                             <Select placeholder="Chọn mặt hàng">
-                                {Merchandise?.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaMH}>{item.TenMH}</Option>
-                                ))}
+                                {
+                                    Array.isArray(Merchandise) &&
+                                    Merchandise?.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaMH}>{item.TenMH}</Option>
+                                    ))}
                             </Select>
                         </Form.Item>
                     </Col>

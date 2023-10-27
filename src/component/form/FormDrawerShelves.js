@@ -114,9 +114,11 @@ const FormDrawerShelves = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn mặt hàng">
-                                {Merchandise?.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaMH}>{item.TenMH}</Option>
-                                ))}
+                                {
+                                    Array.isArray(Merchandise) &&
+                                    Merchandise?.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaMH}>{item.TenMH}</Option>
+                                    ))}
 
 
                             </Select>

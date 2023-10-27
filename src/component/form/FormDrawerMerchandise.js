@@ -71,7 +71,7 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
             }
 
             const res = await ServicesMerchandise.createMerchandise(body)
-            
+
             if (res.message == "mặt hàng đã tồn tại") {
                 message.warning("Mã mặt hàng đã tồn tại!")
             } else if (res.message == "Đồng bộ thêm mặt hàng thành công") {
@@ -131,10 +131,12 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn loại hàng">
-                                {typeOfMerchandise?.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaLH}>{item.TenLH}</Option>
+                                {
+                                    Array.isArray(typeOfMerchandise) &&
+                                    typeOfMerchandise?.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaLH}>{item.TenLH}</Option>
 
-                                ))}
+                                    ))}
 
                             </Select>
                         </Form.Item>
@@ -152,10 +154,12 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn mã giảm giá">
-                                {Coupon?.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaGiamGia}>{item.TenMaGG}</Option>
+                                {
+                                    Array.isArray(Coupon) &&
+                                    Coupon?.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaGiamGia}>{item.TenMaGG}</Option>
 
-                                ))}
+                                    ))}
 
                             </Select>
                         </Form.Item>
@@ -175,10 +179,12 @@ const FormDrawerMerchandise = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn nhà sản xuất">
-                                {Manufacturer?.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaNsx}>{item.TenNsx}</Option>
+                                {
+                                    Array.isArray(Manufacturer) &&
+                                    Manufacturer?.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaNsx}>{item.TenNsx}</Option>
 
-                                ))}
+                                    ))}
                             </Select>
                         </Form.Item>
                     </Col>

@@ -139,7 +139,7 @@ const App = () => {
                         textAlign: "center"
                     }}
                 >
-                    Quế Trần & Tú Quyên ©2023
+                    Quế Trân & Tú Quyên ©2023
                 </Footer>
             </Layout>
         </Layout >

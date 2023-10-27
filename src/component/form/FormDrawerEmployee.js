@@ -66,7 +66,7 @@ const FormDrawerEmployee = ({ open, setOpen, title, id, setId }) => {
                     window.location.reload(false);
                 }, 2000);
             }
-          
+
         } else {
             const ngaysinh = dayjs(values.ngaysinh).format('YYYY-MM-DD HH:mm:ss')
 
@@ -84,7 +84,7 @@ const FormDrawerEmployee = ({ open, setOpen, title, id, setId }) => {
             }
 
             const res = await ServiceEmployee.createEmployee(body)
-          
+
             if (res.message == "Lỗi khi thêm nhân viên vào SQL Server") {
                 message.warning("Mã nhân viên đã tồn tại!")
             } else if (res.message == "Đồng bộ thêm nhân viên thành công!") {
@@ -211,9 +211,11 @@ const FormDrawerEmployee = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn chi nhánh">
-                                {branch.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaCN}>{item.TenCN}</Option>
-                                ))}
+                                {
+                                    Array.isArray(branch) &&
+                                    branch.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaCN}>{item.TenCN}</Option>
+                                    ))}
 
 
                             </Select>
@@ -231,9 +233,11 @@ const FormDrawerEmployee = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn chức vụ">
-                                {designation.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaCV}>{item.TenCV}</Option>
-                                ))}
+                                {
+                                    Array.isArray(designation) &&
+                                    designation.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaCV}>{item.TenCV}</Option>
+                                    ))}
                             </Select>
                         </Form.Item>
                     </Col>

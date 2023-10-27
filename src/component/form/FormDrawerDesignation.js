@@ -11,7 +11,7 @@ const { Option } = Select;
 const FormDrawerDesignation = ({ open, setOpen, title, id, setId }) => {
     const [form] = Form.useForm();
     const { data: HRDepartment } = useAsync(() => ServiceHRDepartment.getAllHRDepartment())
-    
+
 
     useEffect(() => {
         if (id) {
@@ -115,11 +115,13 @@ const FormDrawerDesignation = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn bộ phận">
-                                {HRDepartment?.map((item, i) => (
+                                {
+                                    Array.isArray(HRDepartment) &&
+                                    HRDepartment?.map((item, i) => (
 
-                                    <Option key={i + 1} value={item.MaBP}>{item.TenBP}</Option>
+                                        <Option key={i + 1} value={item.MaBP}>{item.TenBP}</Option>
 
-                                ))}
+                                    ))}
 
                             </Select>
                         </Form.Item>

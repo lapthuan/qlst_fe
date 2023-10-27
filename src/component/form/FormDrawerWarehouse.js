@@ -56,7 +56,7 @@ const FormDrawerWarehouse = ({ open, setOpen, title, id, setId }) => {
             }
 
             const res = await ServiceWarehouse.createWarehouse(body)
-       
+
             if (res.message == "Kho đã tồn tại") {
                 message.warning("Mã kho đã tồn tại!")
             } else if (res.message == "Đồng bộ thêm kho thành công") {
@@ -115,9 +115,12 @@ const FormDrawerWarehouse = ({ open, setOpen, title, id, setId }) => {
                             ]}
                         >
                             <Select placeholder="Chọn chi nhánh">
-                                {branch.map((item, i) => (
-                                    <Option key={i + 1} value={item.MaCN}>{item.TenCN}</Option>
-                                ))}
+                                {
+                                    Array.isArray(branch) &&
+                                    branch?.map((item, i) => (
+                                        <Option key={i + 1} value={item.MaCN}>{item.TenCN}</Option>
+                                    ))
+                                }
                             </Select>
                         </Form.Item>
                     </Col>

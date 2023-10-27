@@ -46,7 +46,7 @@ const Branch = () => {
     };
 
     let data = []
-    if (branch.message) {
+    if (branch.error) {
 
     } else {
         branch?.map((Item, i) => {
