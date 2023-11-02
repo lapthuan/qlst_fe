@@ -9,7 +9,7 @@ import {
     ProFormTextArea,
 } from '@ant-design/pro-components';
 import { Button, Card, Empty, Form, message, Space } from 'antd';
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AiFillLock } from 'react-icons/ai';
 import ServiceDistributed from '../../service/ServiceDistributed';
 
@@ -22,6 +22,7 @@ const ModalDistri = () => {
     const [columnOption, setColumnOption] = useState([])
     const [columnOptionDatabase, setColumnOptionDatabase] = useState([])
     const [isLogin, setIsLogin] = useState(false)
+    const [tanNgang, setTanNgang] = useState(false);
     const [host, setHost] = useState()
     const [userName, setUserName] = useState()
     const [password, setPassword] = useState()
@@ -47,7 +48,7 @@ const ModalDistri = () => {
         }
     }, [bang])
     const loginMysql = async () => {
-      
+
         const body = {
             "host": host ? host : "",
             "username": userName ? userName : "",
@@ -81,8 +82,12 @@ const ModalDistri = () => {
     const backFormLogin = () => {
         if (isLogin === true) {
             setIsLogin(false)
+            setTanNgang(false)
         }
     }
+    const handlerChangePhanTan = () => {
+        setTanNgang(true);
+    };
     return (
         <ModalForm
             width={isLogin === false && 500}
@@ -156,6 +161,7 @@ const ModalDistri = () => {
                         name="host"
                         onChange={(e) => setHost(e.target.value)}
                         label="Host"
+                        value="localhost"
                         placeholder="Nhập host"
                     />
                     <ProFormText
@@ -191,11 +197,17 @@ const ModalDistri = () => {
             )}
 
 
-            {
-                isLogin === true && (
+            {isLogin === true && tanNgang === false &&
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Button type='primary' onClick={handlerChangePhanTan} style={{ width: "150px", margin: "10px" }}>Phân Tán Ngang</Button>
+                    <Button type='primary' style={{ width: "150px", margin: "10px" }}>Phân Tán Dọc</Button>
+
+                </div>
+            }
+            {isLogin === true && tanNgang === true &&
+                (
                     <>
                         <ProForm.Group>
-
                             <ProFormSelect
                                 options={columnOptionTable}
                                 onChange={(value) => setBang(value)}
