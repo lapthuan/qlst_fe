@@ -1,5 +1,3 @@
-
-
 import {
     ModalForm,
     ProForm,
@@ -27,7 +25,6 @@ const ModalDistri = () => {
     const [userName, setUserName] = useState()
     const [password, setPassword] = useState()
     const [database, setDataBase] = useState()
-
 
     useEffect(() => {
         if (bang) {
@@ -107,45 +104,43 @@ const ModalDistri = () => {
             onFinish={async (values) => {
                 await waitTime(2000);
                 if (isLogin === false) {
-                    let columnsTemps = []
+                    let columnsTemps = [];
 
-                    const res = await ServiceDistributed.ShowTable(database)
+                    const res = await ServiceDistributed.ShowTable(database);
                     if (res.table) {
                         res?.table?.map((item, index) => {
                             columnsTemps.push({
                                 value: item,
                                 label: item,
-                            })
-                        })
-                        setColumnOptionTable(columnsTemps)
-                        message.success("Truy cập thành công")
-                        setIsLogin(true)
+                            });
+                        });
+                        setColumnOptionTable(columnsTemps);
+                        message.success("Truy cập thành công");
+                        setIsLogin(true);
                     } else {
-                        message.warning("Database này không được hỗ trợ phân tán!")
+                        message.warning("Database này không được hỗ trợ phân tán!");
                     }
-
-
                 } else {
                     const body = {
-                        "bang": values.bang,
-                        "cot": values.cot,
-                        "dieukien": values.dieukien,
-                        "bangvitu1": "nhanvien",
-                        "cotvitu1": "MaCV",
-                        "dieukienvitu1": values.dieukienvitu1
-                    }
+                        bang: values.bang,
+                        cot: values.cot,
+                        phantan: values.dieukien,
+                        bangvitu1: "nhanvien",
+                        cotvitu1: "MaCV",
+                        dieukienvitu1: values.dieukienvitu1,
+                    };
                     const bodyNull = {
-                        "bang": values.bang,
-                        "cot": values.cot,
-                        "dieukien": values.dieukien,
-                    }
-                    const res = await ServiceDistributed.PhanTanNgang(values.dieukienvitu1 ? body : bodyNull)
-                    message.success('Phân tán dữ liệu thành công');
-                    setColumnOption([])
+                        bang: values.bang,
+                        cot: values.cot,
+                        phantan: values.dieukien,
+                    };
+                    const res = await ServiceDistributed.PhanTanNgang(
+                        values.dieukienvitu1 ? body : bodyNull
+                    );
+                    message.success("Phân tán dữ liệu thành công");
+                    setColumnOption([]);
                     return true;
                 }
-
-
             }}
             submitter={{
                 searchConfig: {
@@ -197,14 +192,16 @@ const ModalDistri = () => {
             )}
 
 
-            {isLogin === true && tanNgang === false &&
+            {
+                isLogin === true && tanNgang === false &&
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <Button type='primary' onClick={handlerChangePhanTan} style={{ width: "150px", margin: "10px" }}>Phân Tán Ngang</Button>
                     <Button type='primary' style={{ width: "150px", margin: "10px" }}>Phân Tán Dọc</Button>
 
                 </div>
             }
-            {isLogin === true && tanNgang === true &&
+            {
+                isLogin === true && tanNgang === true &&
                 (
                     <>
                         <ProForm.Group>
