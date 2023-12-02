@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { AiOutlineMenuUnfold, AiOutlineMenuFold, AiOutlineHome, AiOutlineUnorderedList } from "react-icons/ai";
-import { RiAdminLine, RiFunctionLine, RiBillLine, RiPresentationFill } from "react-icons/ri";
+import { RiAdminLine, RiFunctionLine, RiBillLine, RiPresentationFill, RiLogoutBoxFill, RiLogoutCircleLine, RiLogoutCircleFill, RiLogoutBoxLine } from "react-icons/ri";
+import { CiLogout } from "react-icons/ci";
 import logo from "../../image/logo2.png"
-import { Layout, Menu, Button, Switch, Image, Modal } from 'antd';
+import { Layout, Menu, Button, Switch, Image, Modal, message } from 'antd';
 import ModalDistri from "../modal/modalDistri";
 const { SubMenu } = Menu
 const { Header, Sider, Content, Footer } = Layout;
@@ -25,12 +26,31 @@ const items = [
         getItem("Nhà sản xuất", "5", null, null, "/nhasanxuat"),
         getItem("Phiếu giảm giá", "6", null, null, "/phieugiamgia")
     ]),
+
+    getItem("Chức năng", "sub3", <RiFunctionLine />, [
+        getItem("Kho", "17", null, null, "/kho"),
+        getItem("Kệ", "18", null, null, "/ke"),
+        getItem("Phiếu nhập", "19", null, null, "/phieunhap"),
+    ]),
+    getItem("Hóa đơn", "2", <RiBillLine />, null, "/hoadon"),
+
+
+];
+const itemsAdmin = [
+    getItem("Trang chủ", "1", <AiOutlineHome />, null, "/"),
+    getItem("Danh mục", "sub1", <AiOutlineUnorderedList />, [
+        getItem("Hàng hóa", "3", null, null, "/mathang"),
+        getItem("Loại hàng", "4", null, null, "/loaihang"),
+        getItem("Nhà sản xuất", "5", null, null, "/nhasanxuat"),
+        getItem("Phiếu giảm giá", "6", null, null, "/phieugiamgia")
+    ]),
     getItem("Quản trị", "sub2", <RiAdminLine />, [
         getItem("Nhân viên", "12", null, null, "/nhanvien"),
         getItem("Tài khoản", "13", null, null, "/taikhoan"),
         getItem("Khách hàng", "14", null, null, "/khachhang"),
         getItem("Chức vụ", "15", null, null, "/chucvu"),
         getItem("Bộ phận", "16", null, null, "/bophan"),
+        getItem("Chi nhánh", "20", null, null, "/chinhanh"),
     ]),
     getItem("Chức năng", "sub3", <RiFunctionLine />, [
         getItem("Kho", "17", null, null, "/kho"),
@@ -38,21 +58,26 @@ const items = [
         getItem("Phiếu nhập", "19", null, null, "/phieunhap"),
     ]),
     getItem("Hóa đơn", "2", <RiBillLine />, null, "/hoadon"),
-    getItem("Chi nhánh", "20", <RiPresentationFill />, null, "/chinhanh"),
+
 
 ];
-
 const App = () => {
     const [theme, setTheme] = useState('light');
     const [collapsed, setCollapsed] = useState(false);
     const [current, setCurrent] = useState('1');
-
+    const User = JSON.parse(localStorage.getItem('user'));
+    const navigate = useNavigate();
     const changeTheme = (value) => {
         setTheme(value ? 'dark' : 'light');
     };
     const onClick = (e) => {
         setCurrent(e.key);
     };
+    const logout = () => {
+        message.success("Đăng xuất thành công")
+        localStorage.removeItem("user")
+        navigate("/dangnhap")
+    }
     return (
         <Layout theme={theme}>
 
@@ -73,25 +98,53 @@ const App = () => {
                     selectedKeys={[current]}
                     mode="inline"
                 >
-                    {items.map(item => {
-                        if (item.children) {
-                            return (
-                                <SubMenu key={item.key} icon={item.icon} title={item.label}>
-                                    {item.children.map(childItem => (
-                                        <Menu.Item key={childItem.key}>
-                                            <Link to={childItem.path}>{childItem.label}</Link>
-                                        </Menu.Item>
-                                    ))}
-                                </SubMenu>
-                            );
-                        }
 
-                        return (
-                            <Menu.Item key={item.key} icon={item.icon}>
-                                <Link to={item.path}>{item.label}</Link>
-                            </Menu.Item>
-                        );
-                    })}
+                    {
+                        User.Quyen == "0" ?
+
+                            items.map(item => {
+                                if (item.children) {
+                                    return (
+                                        <SubMenu key={item.key} icon={item.icon} title={item.label}>
+                                            {item.children.map(childItem => (
+                                                <Menu.Item key={childItem.key}>
+                                                    <Link to={childItem.path}>{childItem.label}</Link>
+                                                </Menu.Item>
+                                            ))}
+                                        </SubMenu>
+                                    );
+                                }
+
+                                return (
+                                    <Menu.Item key={item.key} icon={item.icon}>
+                                        <Link to={item.path}>{item.label}</Link>
+                                    </Menu.Item>
+                                );
+                            }) :
+                            itemsAdmin.map(item => {
+                                if (item.children) {
+                                    return (
+                                        <SubMenu key={item.key} icon={item.icon} title={item.label}>
+                                            {item.children.map(childItem => (
+                                                <Menu.Item key={childItem.key}>
+                                                    <Link to={childItem.path}>{childItem.label}</Link>
+                                                </Menu.Item>
+                                            ))}
+                                        </SubMenu>
+                                    );
+                                }
+
+                                return (
+                                    <Menu.Item key={item.key} icon={item.icon}>
+                                        <Link to={item.path}>{item.label}</Link>
+                                    </Menu.Item>
+                                );
+                            })
+
+                    }
+                    <Menu.Item onClick={logout} icon={<RiLogoutBoxLine />}>
+                        Đăng xuất
+                    </Menu.Item>
                 </Menu>
             </Sider>
             <Layout>
@@ -111,7 +164,7 @@ const App = () => {
                             height: 64,
                         }}
                     />
-                    <ModalDistri />
+
 
                     <Switch
                         style={{ marginLeft: "10px" }}
@@ -120,6 +173,9 @@ const App = () => {
                         checkedChildren="Tối"
                         unCheckedChildren="Sáng"
                     />
+
+                    {(User.Quyen == 0 ? "Nhân viên:" : "Admin:") + User.TenNV}
+
 
                 </Header>
                 <Content

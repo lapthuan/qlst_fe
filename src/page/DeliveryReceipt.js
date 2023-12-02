@@ -1,5 +1,5 @@
 import { Breadcrumb, Button, Divider, message, Space } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
@@ -8,7 +8,7 @@ import useAsync from '../hook/useAsync';
 import ServiceDeliveryReceipt from '../service/ServiceDeliveryReceipt';
 import dayjs from 'dayjs';
 import ModalDelete from '../component/modal/modalDelete';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const DeliveryReceipt = () => {
@@ -16,6 +16,16 @@ const DeliveryReceipt = () => {
     const [openModal, setOpenModal] = useState(false);
     const [id, setId] = useState();
     const { data: deliveryReceipt } = useAsync(() => ServiceDeliveryReceipt.getAllDeliveryReceipt())
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        const isLoggedIn = localStorage.getItem('user');
+        console.log('isLoggedIn', isLoggedIn)
+        if (!isLoggedIn) {
+            navigate("/dangnhap")
+        }
+    }, [])
     const columns = [
         {
             title: 'Mã phiếu nhập',

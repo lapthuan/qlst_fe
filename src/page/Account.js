@@ -1,5 +1,5 @@
 import { Breadcrumb, Button, Divider, message, Space } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerManufacturer from '../component/form/FormDrawerManufacturer';
@@ -7,6 +7,7 @@ import FormDrawerAccount from '../component/form/FormDrawerAccount';
 import useAsync from '../hook/useAsync';
 import ServiceAccount from '../service/ServiceAccount';
 import ModalDelete from '../component/modal/modalDelete';
+import { useNavigate } from 'react-router-dom';
 
 
 const Account = () => {
@@ -14,7 +15,16 @@ const Account = () => {
     const [id, setId] = useState();
     const { data: account } = useAsync(() => ServiceAccount.getAllAccount())
     const [openModal, setOpenModal] = useState(false);
+    const navigate = useNavigate();
 
+
+    useEffect(() => {
+        const isLoggedIn = localStorage.getItem('user');
+        console.log('isLoggedIn', isLoggedIn)
+        if (!isLoggedIn) {
+            navigate("/dangnhap")
+        }
+    }, [])
     const columns = [
         {
             title: 'Tên tài khoản',

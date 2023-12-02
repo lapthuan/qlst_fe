@@ -3,6 +3,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Layout from "../component/layout/layout"
+import Login from '../page/Login';
 import OrderDetail from '../page/OrderDetail';
 
 const Home = lazy(() => import('../page/Home'));
@@ -29,6 +30,7 @@ const App = () => (
             <div className="content" />
         </Spin>}>
             <Routes>
+                <Route path='/dangnhap' element={<Login />} />
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
                     <Route path='/mathang' element={<Merchandise />} />

@@ -1,5 +1,5 @@
 import { Breadcrumb, Button, Divider, message, Space } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomTable from '../component/table/CustomTable';
 import { AiOutlinePlus } from 'react-icons/ai';
 import FormDrawerCoupon from '../component/form/FormDrawerCoupon';
@@ -7,6 +7,7 @@ import useAsync from '../hook/useAsync';
 import ServiceCoupon from '../service/ServiceCoupon';
 import dayjs from 'dayjs';
 import ModalDelete from '../component/modal/modalDelete';
+import { useNavigate } from 'react-router-dom';
 
 
 const Coupon = () => {
@@ -14,7 +15,16 @@ const Coupon = () => {
     const [id, setId] = useState();
     const { data: coupon } = useAsync(() => ServiceCoupon.getAllCoupon())
     const [openModal, setOpenModal] = useState(false);
+    const navigate = useNavigate();
 
+
+    useEffect(() => {
+        const isLoggedIn = localStorage.getItem('user');
+        console.log('isLoggedIn', isLoggedIn)
+        if (!isLoggedIn) {
+            navigate("/dangnhap")
+        }
+    }, [])
     const columns = [
         {
             title: 'Mã giảm giá',
